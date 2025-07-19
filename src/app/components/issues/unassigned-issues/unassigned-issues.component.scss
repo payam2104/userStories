@@ -1,0 +1,26 @@
+.unassigned-column {
+  background-color: #fff8f0;
+  border: 1px dashed #ffcc80;
+  padding: 1rem;
+  min-height: 200px;
+  border-radius: 6px;
+}
+
+.issue-card {
+  background: #fff;
+  border: 1px solid #ddd;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border-radius: 4px;
+  cursor: grab;
+}
+
+.reset-button {
+  margin-bottom: 1rem;
+  padding: 0.4rem 1rem;
+  background-color: #eee;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}

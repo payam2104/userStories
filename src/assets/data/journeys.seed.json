@@ -1,0 +1,86 @@
+[
+  {
+    "id": "onboardingebaba",
+    "title": "Onboarding",
+    "steps": [
+      {
+        "id": "reg",
+        "title": "Registrierung starten"
+      },
+      {
+        "id": "email",
+        "title": "E-Mail bestätigen"
+      },
+      {
+        "id": "login",
+        "title": "Erstes Login"
+      },
+      {
+        "id": "profil",
+        "title": "Profil anlegen"
+      }
+    ]
+  },
+  {
+    "id": "project",
+    "title": "Projekt anlegen",
+    "steps": [
+      {
+        "id": "name",
+        "title": "Projektnamen wählen"
+      },
+      {
+        "id": "desc",
+        "title": "Beschreibung eingeben"
+      },
+      {
+        "id": "template",
+        "title": "Template auswählen"
+      },
+      {
+        "id": "save",
+        "title": "Projekt speichern"
+      }
+    ]
+  },
+  {
+    "id": "team",
+    "title": "Team verwalten",
+    "steps": [
+      {
+        "id": "invite",
+        "title": "Nutzer:in einladen"
+      },
+      {
+        "id": "role",
+        "title": "Rolle festlegen"
+      },
+      {
+        "id": "rights",
+        "title": "Rechte verwalten"
+      }
+    ]
+  },
+  {
+    "id": "release",
+    "title": "Release planen",
+    "steps": [
+      {
+        "id": "select",
+        "title": "Issues auswählen"
+      },
+      {
+        "id": "goal",
+        "title": "Release-Ziel festlegen"
+      },
+      {
+        "id": "date",
+        "title": "Datum definieren"
+      },
+      {
+        "id": "review",
+        "title": "Review starten"
+      }
+    ]
+  }
+]

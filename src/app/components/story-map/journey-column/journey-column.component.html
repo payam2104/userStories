@@ -1,0 +1,14 @@
+<div class="journey-column">
+  <h2>{{ journey.title }}</h2>
+  @for (step of journey.steps; track step.id) {
+    <app-step-box
+      [step]="getStepSignal(step)"
+      [issues]="getIssuesForStep(step.id)"
+      [connectedDropListIds]="allStepIds"
+    />
+  }
+</div>
+
+<div *ngIf="allStepIds.length">
+  IDs: {{ allStepIds.join(', ') }}
+</div>

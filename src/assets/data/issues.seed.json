@@ -1,0 +1,27 @@
+[
+  {
+    "id": "GL-001",
+    "title": "Login-Fehler",
+    "description": "Fehlermeldung bei ungültigem Passwort"
+  },
+  {
+    "id": "GL-002",
+    "title": "Suchfunktion verbessern",
+    "description": "Suche reagiert zu langsam"
+  },
+  {
+    "id": "GL-003",
+    "title": "Dark Mode hinzufügen",
+    "description": "Thema wird oft gewünscht"
+  },
+  {
+    "id": "GL-004",
+    "title": "Release Info anzeigen",
+    "description": "Anzeige der aktuellen Version im Footer"
+  },
+  {
+    "id": "GL-005",
+    "title": "Registrierung optimieren",
+    "description": "Doppelte Eingabefelder vermeiden"
+  }
+]
