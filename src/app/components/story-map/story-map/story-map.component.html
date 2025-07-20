@@ -3,9 +3,17 @@
 <div class="story-map">
   <app-unassigned-issues [connectedDropListIds]="allStepIds()" />
 
-  <div class="journeys-container" cdkDropListGroup>
-  @for (journey of journeys(); track journey.id) {
+  <!--<div class="journeys-container" cdkDropListGroup>
+    @for (journey of journeys(); track journey.id) {
     <app-journey-column [journey]="journey" [allStepIds]="allStepIds()" />
-  }
-</div>
+    }
+  </div>-->
+
+  <div class="journeys-container" cdkDropListGroup>
+    @for (journey of journeys(); track journey.id) {
+    <app-journey-column [journey]="journey" [allStepIds]="allStepIds()"
+      [releases]="journey.title === 'Releases' ? releases() : []" [getIssuesForRelease]="getIssuesForRelease" />
+    }
+  </div>
+
 </div>

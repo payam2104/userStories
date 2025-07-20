@@ -6,11 +6,12 @@ import { IssueStore } from '../../../core/stores/issue.store';
 import { issueDB } from '../../../core/services/issue-db.service';
 import { Issue } from '../../../core/model/issue.model';
 import { JourneyStore } from '../../../core/stores/journey.store';
+import { IssueCardComponent } from '../../story-map/issue-card/issue-card.component';
 
 @Component({
   selector: 'app-unassigned-issues',
   standalone: true,
-  imports: [CommonModule, DragDropModule],
+  imports: [CommonModule, DragDropModule, IssueCardComponent],
   templateUrl: './unassigned-issues.component.html',
   styleUrls: ['./unassigned-issues.component.scss']
 })

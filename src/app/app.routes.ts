@@ -1,12 +1,26 @@
 import { Routes } from '@angular/router';
 
 import { StoryMapComponent } from './components/story-map/story-map/story-map.component';
+import { ReleaseListComponent } from './components/releases/release-list/release-list.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: StoryMapComponent,
-    title: 'User Story Map'
+    loadComponent: () =>
+      import('./components/story-map/story-map/story-map.component')
+        .then(m => m.StoryMapComponent)
+  },
+  {
+    path: 'releases',
+    loadComponent: () =>
+      import('./components/releases/release-list/release-list.component')
+        .then(m => m.ReleaseListComponent)
+  },
+  {
+    path: 'releases/edit/:id',
+    loadComponent: () =>
+      import('./components/releases/release-detail/release-detail.component')
+        .then(m => m.ReleaseDetailComponent)
   },
   {
     path: '**',

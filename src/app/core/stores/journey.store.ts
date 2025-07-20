@@ -1,21 +1,24 @@
 import { Injectable, signal } from '@angular/core';
 import { Journey } from '../model/journey.model';
 import { Step } from '../model/step.model';
-import { journeyDB } from '../services/journey-db.service';
+import { JourneyDB } from '../services/journey-db.service';
 
 @Injectable({ providedIn: 'root' })
 export class JourneyStore {
   private readonly _journeys = signal<Journey[]>([]);
   readonly journeys = this._journeys.asReadonly();
 
-  constructor() {}
+  constructor(private journeyDB: JourneyDB) { }
 
   // Manueller Reset + Seeding + Laden
   async initFromDB() {
-    await journeyDB.journeys.clear();             // DB leeren
-    await journeyDB.seedInitialJourneys();        // JSON neu laden
-    const refreshed = await journeyDB.getAll();   // aus DB lesen
-    this._journeys.set(refreshed);                // im Signal setzen
+    await this.journeyDB.journeys.clear();             // DB leeren
+    await this.journeyDB.seedInitialJourneys();        // JSON neu laden
+    const refreshed = await this.journeyDB.getAll();   // aus DB lesen
+    // im Signal setzen
+    this._journeys.set(
+      refreshed.sort((a, b) => (a as any).order - (b as any).order)
+    );
   }
 
   setJourneys(journeys: Journey[]) {

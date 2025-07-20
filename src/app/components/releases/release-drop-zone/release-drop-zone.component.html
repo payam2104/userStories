@@ -1,0 +1,14 @@
+<div
+  class="release-box"
+  cdkDropList
+  [cdkDropListData]="issues"
+  [cdkDropListConnectedTo]="connectedDropListIds"
+  [id]="dropListId"
+  (cdkDropListDropped)="onDrop($event)"
+>
+  <h4>{{ release.name }}</h4>
+
+  @for (issue of issues; track issue.id) {
+    <app-issue-card [issue]="issue" cdkDrag [cdkDragData]="issue" />
+  }
+</div>

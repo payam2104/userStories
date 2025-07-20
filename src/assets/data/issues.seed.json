@@ -23,5 +23,55 @@
     "id": "GL-005",
     "title": "Registrierung optimieren",
     "description": "Doppelte Eingabefelder vermeiden"
+  },
+  {
+    "id": "GL-006",
+    "title": "Passwort-Richtlinien anzeigen",
+    "description": "Hinweistext zu Passwortanforderungen fehlt beim Registrieren"
+  },
+  {
+    "id": "GL-007",
+    "title": "E-Mail-Benachrichtigung deaktivieren",
+    "description": "Option zum Deaktivieren der System-E-Mails hinzufügen"
+  },
+  {
+    "id": "GL-008",
+    "title": "Profilbild-Upload verbessern",
+    "description": "Fehler beim Hochladen großer Bilder"
+  },
+  {
+    "id": "GL-009",
+    "title": "Mobile Ansicht optimieren",
+    "description": "Navigation überlappt Inhalte auf kleinen Bildschirmen"
+  },
+  {
+    "id": "GL-010",
+    "title": "2-Faktor-Authentifizierung hinzufügen",
+    "description": "Login-Sicherheit durch zweite Authentifizierungsebene erhöhen"
+  },
+  {
+    "id": "GL-011",
+    "title": "Spracheinstellungen speichern",
+    "description": "Ausgewählte Sprache wird beim nächsten Login vergessen"
+  },
+  {
+    "id": "GL-012",
+    "title": "Projektübersicht filtern",
+    "description": "Filter nach Erstellungsdatum oder Tags ermöglichen"
+  },
+  {
+    "id": "GL-013",
+    "title": "Tooltip für Icons ergänzen",
+    "description": "Nicht alle Icons sind selbsterklärend – Tooltips fehlen"
+  },
+  {
+    "id": "GL-014",
+    "title": "Fehlerseite 404 gestalten",
+    "description": "Standard-404-Seite durch benutzerfreundliche Version ersetzen"
+  },
+  {
+    "id": "GL-015",
+    "title": "Benutzerrolle ändern",
+    "description": "Admins sollen Rollen direkt im Dashboard anpassen können"
   }
 ]

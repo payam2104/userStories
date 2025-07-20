@@ -19,7 +19,8 @@
         "id": "profil",
         "title": "Profil anlegen"
       }
-    ]
+    ],
+    "order": 1
   },
   {
     "id": "project",
@@ -41,7 +42,8 @@
         "id": "save",
         "title": "Projekt speichern"
       }
-    ]
+    ],
+    "order": 2
   },
   {
     "id": "team",
@@ -59,28 +61,13 @@
         "id": "rights",
         "title": "Rechte verwalten"
       }
-    ]
+    ],
+    "order": 3
   },
   {
     "id": "release",
-    "title": "Release planen",
-    "steps": [
-      {
-        "id": "select",
-        "title": "Issues auswählen"
-      },
-      {
-        "id": "goal",
-        "title": "Release-Ziel festlegen"
-      },
-      {
-        "id": "date",
-        "title": "Datum definieren"
-      },
-      {
-        "id": "review",
-        "title": "Review starten"
-      }
-    ]
+    "title": "Releases",
+    "steps": [],
+    "order": 4
   }
 ]

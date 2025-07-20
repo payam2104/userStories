@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  max-width: 600px;
+  margin: 2rem auto;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+input[type='text'] {
+  display: block;
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 0.75rem;
+  transition: 0.2s ease;
+
+  &:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 0 1px #007bff44;
+    outline: none;
+  }
+
+  &.ng-invalid.ng-touched {
+    border-color: #dc3545;
+  }
+}
+
+button {
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

@@ -1,0 +1,22 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+a {
+  margin-left: 1rem;
+  text-decoration: none;
+  color: #333;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &.router-link-active {
+    font-weight: bold;
+    color: #007bff;
+  }
+}
