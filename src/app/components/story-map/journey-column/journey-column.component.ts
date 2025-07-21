@@ -5,7 +5,7 @@ import { Journey } from '../../../core/model/journey.model';
 import { Issue } from '../../../core/model/issue.model';
 import { IssueStore } from '../../../core/stores/issue.store';
 import { Step } from '../../../core/model/step.model';
-import { Release } from '../../../core/model/release.mode';
+import { Release } from '../../../core/model/release.model';
 import { ReleaseDropZoneComponent } from '../../releases/release-drop-zone/release-drop-zone.component';
 
 @Component({
@@ -20,6 +20,7 @@ export class JourneyColumnComponent {
   @Input() allStepIds: string[] = [];
   @Input() releases: Release[] = [];
   @Input() getIssuesForRelease!: (releaseId: string) => Issue[];
+  @Input() allDropListIds: string[] = [];
 
   readonly issueStore = inject(IssueStore);
   readonly debugIssues = this.issueStore.issues;
@@ -33,8 +34,6 @@ export class JourneyColumnComponent {
       this.issueStore.issues().filter(issue => issue.stepId === stepId)
     );
   }
-
-
 
   getStepSignal(step: Step): Signal<Step> {
     return computed(() => step);

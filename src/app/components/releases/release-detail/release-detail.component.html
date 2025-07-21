@@ -2,25 +2,19 @@
   <h2 class="text-xl font-bold mb-4">Release bearbeiten</h2>
 
   <form [formGroup]="form" (ngSubmit)="save()" class="space-y-2">
-    <input
-      type="text"
-      formControlName="name"
-      placeholder="Name"
-      class="border p-2 rounded w-full"
-    />
-    <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="text-red-500 text-sm">
-      Name ist erforderlich.
-    </div>
+    <input type="text" formControlName="name" placeholder="Name" class="border p-2 rounded w-full" />
+    
+    @if (form.get('name')?.invalid && form.get('name')?.touched) {
+      <div class="text-red-500 text-sm">
+        Name ist erforderlich.
+      </div>
+    }
 
-    <input
-      type="text"
-      formControlName="description"
-      placeholder="Beschreibung"
-      class="border p-2 rounded w-full"
-    />
+    <input type="text" formControlName="description" placeholder="Beschreibung" class="border p-2 rounded w-full" />
 
     <div class="flex gap-4 mt-4">
-      <button type="submit" [disabled]="form.invalid" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+      <button type="submit" [disabled]="form.invalid"
+        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
         💾 Speichern
       </button>
       <button type="button" (click)="cancel()" class="text-gray-600 underline">

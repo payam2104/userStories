@@ -1,12 +1,20 @@
-<div class="step-box" [id]="step().id" cdkDropList [cdkDropListData]="issues()"
-  [cdkDropListConnectedTo]="connectedDropListIds" (cdkDropListDropped)="onDrop($event)">
+@if (step) {
+<div class="step-box"
+  [id]="step().id"
+  cdkDropList
+  [cdkDropListData]="issues()"
+  [cdkDropListConnectedTo]="connectedDropListIds"
+  (cdkDropListDropped)="onDrop($event)">
   <h4>{{ step().title }}</h4>
 
-  <div *ngIf="issues().length === 0" class="empty">
+  @if (issues().length === 0) {
+  <div class="empty">
     <em>Keine Issues</em>
   </div>
+  }
 
   @for (issue of issues(); track issue.id) {
   <app-issue-card [issue]="issue" />
   }
 </div>
+}

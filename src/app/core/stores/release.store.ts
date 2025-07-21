@@ -1,5 +1,5 @@
 import { inject, Injectable, computed, signal } from '@angular/core';
-import { Release } from '../model/release.mode';
+import { Release } from '../model/release.model';
 import { ReleaseDB } from '../services/release-db.service';
 
 @Injectable({ providedIn: 'root' })

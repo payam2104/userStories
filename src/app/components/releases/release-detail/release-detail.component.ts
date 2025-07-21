@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { ReleaseStore } from '../../../core/stores/release.store';
-import { Release } from '../../../core/model/release.mode';
+import { Release } from '../../../core/model/release.model';
 import { CommonModule } from '@angular/common';
 
 @Component({

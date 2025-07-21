@@ -1,7 +1,10 @@
 <div class="issue-card" cdkDrag [cdkDragData]="issue">
   <strong>{{ issue.title }}</strong>
   <p>{{ issue.description }}</p>
-  <small *ngIf="issue.release" class="text-xs text-blue-600">
-    🎯 {{ issue.release.name }}
+  
+  @if (releaseName()) {
+  <small class="text-xs text-blue-600">
+    🎯 {{ releaseName() }}
   </small>
+  }
 </div>

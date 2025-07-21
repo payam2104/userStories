@@ -1,33 +1,8 @@
-<!--<div
-class="step-box"
-cdkDropList
-[cdkDropListData]="issues()"
-[cdkDropListConnectedTo]="connectedDropListIds"
-(cdkDropListDropped)="onDrop($event)">
-@for (issue of issues(); track issue.id) {
-  <div cdkDrag [cdkDragData]="issue" class="issue-card">
-    {{ issue.title }}
-  </div>
-}
-</div>-->
-
-
-
-
-<div
-class="drop-zone"
-cdkDropList
-[cdkDropListData]="issues()"
-[cdkDropListConnectedTo]="connectedDropListIds"
-(cdkDropListDropped)="onDrop($event)"
->
-@for (issue of issues(); track issue.id) {
-  <app-issue-card
-  [issue]="issue"
-  cdkDrag
-  [cdkDragData]="issue"
-  />
-}
+<div class="drop-zone" [id]="'unassigned'" cdkDropList [cdkDropListData]="issues()"
+  [cdkDropListConnectedTo]="connectedDropListIds" (cdkDropListDropped)="onDrop($event)">
+  @for (issue of issues(); track issue.id) {
+  <app-issue-card [issue]="issue" cdkDrag [cdkDragData]="issue" />
+  }
 </div>
 
 <button (click)="resetData()">reset DB</button>

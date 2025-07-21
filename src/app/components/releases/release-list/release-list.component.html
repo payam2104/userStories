@@ -3,9 +3,11 @@
 
   <form [formGroup]="form" (ngSubmit)="create()" class="space-y-2 mb-6">
     <input type="text" formControlName="name" placeholder="Name des Releases" class="border p-2 rounded w-full" />
-    <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="text-red-500 text-sm">
+    @if (form.get('name')?.invalid && form.get('name')?.touched) {
+    <div class="text-red-500 text-sm">
       Bitte gib einen gültigen Namen ein.
     </div>
+    }
 
     <input type="text" formControlName="description" placeholder="Beschreibung (optional)"
       class="border p-2 rounded w-full" />

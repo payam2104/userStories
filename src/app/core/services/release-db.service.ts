@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import Dexie, { Table } from 'dexie';
-import { Release } from '../model/release.mode';
+import { Release } from '../model/release.model';
 
 @Injectable({ providedIn: 'root' })
 export class ReleaseDB extends Dexie {

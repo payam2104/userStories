@@ -33,6 +33,14 @@ export class IssueDB extends Dexie {
       await this.issues.put(issue);
     }
   }
+  
+  async updateIssuePartial(issueId: string, changes: Partial<Issue>): Promise<void> {
+    const issue = await this.issues.get(issueId);
+    if (!issue) return;
+
+    const updated = { ...issue, ...changes };
+    await this.issues.put(updated);
+  }
 
   async resetIssues(): Promise<void> {
     await this.issues.clear();

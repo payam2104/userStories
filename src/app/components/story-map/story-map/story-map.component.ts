@@ -38,11 +38,16 @@ export class StoryMapComponent {
     this.journeys().flatMap(j => j.steps.map(s => s.id))
   );
 
-  /*getIssuesForRelease(releaseId: string): Issue[] {
-    return this.issues().filter((issue: Issue) => issue.release?.id === releaseId);
-  }*/
   getIssuesForRelease = (releaseId: string): Issue[] => {
-    return this.issueStore.issues().filter(issue => issue.release?.id === releaseId);
+    return this.issueStore.issues().filter(issue => issue.releaseId === releaseId);
   };
 
+  readonly allDropListIds = computed(() => {
+    const stepIds = this.journeys().flatMap(j => j.steps.map(s => s.id));
+    const releaseIds = this.releases().map(r => `release-${r.id}`);
+    return ['unassigned', ...stepIds, ...releaseIds];
+  });
+
+
 }
+

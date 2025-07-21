@@ -1,14 +1,25 @@
-<div
-  class="release-box"
-  cdkDropList
-  [cdkDropListData]="issues"
-  [cdkDropListConnectedTo]="connectedDropListIds"
-  [id]="dropListId"
-  (cdkDropListDropped)="onDrop($event)"
->
+@if (dropListId) {
+<div class="release-box"
+     cdkDropList
+     [id]="dropListId"
+     [cdkDropListData]="issuesSignal()"
+     [cdkDropListConnectedTo]="connectedDropListIds"
+     (cdkDropListDropped)="onDrop($event)">
+
   <h4>{{ release.name }}</h4>
 
-  @for (issue of issues; track issue.id) {
-    <app-issue-card [issue]="issue" cdkDrag [cdkDragData]="issue" />
+  @if (issuesSignal().length === 0) {
+    <p class="empty">Keine Issues</p>
+  } @else {
+    @for (issue of issuesSignal(); track issue.id) {
+      <!-- 🆕 Hier ersetzen wir das div durch app-issue-card -->
+      <app-issue-card
+        [issue]="issue"
+        [releases]="releases"
+        cdkDrag
+        [cdkDragData]="issue">
+      </app-issue-card>
+    }
   }
 </div>
+}

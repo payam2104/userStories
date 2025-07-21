@@ -33,7 +33,8 @@ export class IssueStore {
 
   // Computed
   readonly unassignedIssues = computed(() =>
-    this._issues().filter(issue => !issue.stepId)
+    //this._issues().filter(issue => !issue.stepId)
+    this._issues().filter(issue => !issue.stepId && !issue.releaseId)
   );
 
   // Step zuweisen (nur wenn nötig)
@@ -41,21 +42,43 @@ export class IssueStore {
     this._issues.update(issues =>
       issues.map(issue =>
         issue.id === issueId && issue.stepId !== stepId
-          ? { ...issue, stepId }
+          ? { ...issue, stepId, releaseId: null }
           : issue
       )
     );
     issueDB.updateStep(issueId, stepId);
   }
 
-  // einem Release zuweisen
-  assignToRelease(issueId: string, releaseId: string) {
+  async assignToRelease(issueId: string, releaseId: string) {
+    const issue = this._issues().find(i => i.id === issueId);
+    if (!issue) return;
+
+    const updated: Issue = { ...issue, releaseId, stepId: null };
+
+    /*await issueDB.update(issueId, {
+      releaseId,
+      stepId: null
+    });*/
+    await issueDB.updateIssuePartial(issueId, {
+      releaseId,
+      stepId: null
+    });
+
+    this._issues.update(list =>
+      list.map(i => i.id === issueId ? updated : i)
+    );
+  }
+
+
+  // aus Release entfernen
+  removeFromRelease(issueId: string) {
     this._issues.update(list =>
       list.map(issue =>
-        issue.id === issueId ? { ...issue, releaseId } : issue
+        issue.id === issueId
+          ? { ...issue, releaseId: undefined }
+          : issue
       )
     );
-    // optional: persistieren in releaseDB
   }
 
   // Step entfernen
