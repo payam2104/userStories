@@ -1,16 +1,11 @@
 <div class="journey-column">
-  <h2>{{ journey.title }}</h2>
+  <h2>{{ journey.name }}</h2>
   <div class="step-list">
-    @if (journey.title === 'Releases') {
-    @for (release of releases; track release.id) {
-    <app-release-drop-zone [release]="release" [issues]="getIssuesForRelease(release.id)"
-      [connectedDropListIds]="allDropListIds" />
-    }
-    } @else {
     @for (step of journey.steps; track step.id) {
-    <app-step-box [step]="getStepSignal(step)" [issues]="getIssuesForStep(step.id)"
-      [connectedDropListIds]="allDropListIds" />
-    }
+      <app-step-box
+        [step]="getStepSignal(step)"
+        [issues]="getIssuesForStep(step.id)"
+        [connectedDropListIds]="connectedDropListIds" />
     }
   </div>
 </div>

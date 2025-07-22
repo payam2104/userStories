@@ -1,4 +1,5 @@
 import Dexie, { Table } from 'dexie';
+import { v4 as uuidv4 } from 'uuid';
 import { Issue } from '../model/issue.model';
 
 export class IssueDB extends Dexie {
@@ -16,7 +17,11 @@ export class IssueDB extends Dexie {
   async seedInitialIssues(data: Issue[]) {
     const count = await this.issues.count();
     if (count === 0) {
-      await this.issues.bulkPut(data);
+      const withUUIDs = data.map(issue => ({
+        ...issue,
+        id: uuidv4()
+      }));
+      await this.issues.bulkPut(withUUIDs);
     }
   }
 
@@ -33,7 +38,7 @@ export class IssueDB extends Dexie {
       await this.issues.put(issue);
     }
   }
-  
+
   async updateIssuePartial(issueId: string, changes: Partial<Issue>): Promise<void> {
     const issue = await this.issues.get(issueId);
     if (!issue) return;

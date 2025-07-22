@@ -8,23 +8,19 @@ export class IssueStore {
   readonly issues = this._issues.asReadonly();
 
   constructor() {
-    this.initFromDB();
+    this.initFromDB(); // jetzt sicher
   }
 
   async initFromDB() {
-    await issueDB.issues.clear(); // ⚠️ verhindert doppelte Einträge!
-    await this.seedMockData();
-    await this.loadAllFromDB();
+    const count = await issueDB.issues.count();
+    if (count === 0) {
+      await this.seedMockData(); // Nur seeden, wenn DB leer
+    }
+    await this.loadAllFromDB(); // Immer laden
   }
 
-  // Seed-Methoden
   private async seedMockData() {
     await issueDB.seedInitialIssues(await this.getMockIssues());
-  }
-
-  private async loadAllFromDB() {
-    const issues = await issueDB.getAll();
-    this._issues.set(issues);
   }
 
   private async getMockIssues(): Promise<Issue[]> {
@@ -32,30 +28,40 @@ export class IssueStore {
     return await response.json();
   }
 
-  // Computed
-  readonly unassignedIssues = computed(() =>
-    //this._issues().filter(issue => !issue.stepId)
-    this._issues().filter(issue => !issue.stepId && !issue.releaseId)
-  );
+  private async loadAllFromDB() {
+    const issues = await issueDB.getAll();
+    issues.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+    this._issues.set(issues);
 
-  // Step zuweisen (nur wenn nötig)
-  assignToStep(issueId: string, stepId: string): void {
-    this._issues.update(issues =>
-      issues.map(issue =>
-        issue.id === issueId && issue.stepId !== stepId
-          ? { ...issue, stepId, releaseId: null }
-          : issue
-      )
-    );
-    issueDB.updateStep(issueId, stepId);
   }
 
-  async assignToRelease(issueId: string, releaseId: string) {
+  readonly unassignedIssues = computed(() =>
+    this._issues()
+      .filter(issue => !issue.stepId && !issue.releaseId)
+  );
+
+  assignToStep(issueId: string, stepId: string): void {
+    const issue = this._issues().find(i => i.id === issueId);
+    if (!issue || issue.stepId === stepId) return;
+
+    const updated: Issue = { ...issue, stepId }; // releaseId bleibt erhalten
+
+    this._issues.update(list =>
+      list.map(i => i.id === issueId ? updated : i)
+    );
+
+    issueDB.updateIssuePartial(issueId, {
+      stepId
+    });
+  }
+
+
+  async assignToRelease(issueId: string, releaseId: string | null) {
     const issue = this._issues().find(i => i.id === issueId);
     if (!issue) return;
 
     const updated: Issue = { ...issue, releaseId };
-    
+
     await issueDB.updateIssuePartial(issueId, {
       releaseId
     });
@@ -65,8 +71,19 @@ export class IssueStore {
     );
   }
 
+  updateIssueRelease(issueId: string, newReleaseId: string) {
+    const issue = this._issues().find(i => i.id === issueId);
+    if (!issue) return;
 
-  // aus Release entfernen
+    const updated: Issue = { ...issue, releaseId: newReleaseId };
+
+    this._issues.update(list =>
+      list.map(i => i.id === issueId ? updated : i)
+    );
+
+    issueDB.updateIssuePartial(issueId, { releaseId: newReleaseId });
+  }
+
   removeFromRelease(issueId: string) {
     this._issues.update(list =>
       list.map(issue =>
@@ -77,7 +94,6 @@ export class IssueStore {
     );
   }
 
-  // Step entfernen
   unassignFromStep(issueId: string) {
     this._issues.update(list =>
       list.map(issue =>
@@ -87,14 +103,22 @@ export class IssueStore {
     issueDB.updateStep(issueId, undefined);
   }
 
-  // manuelles Setzen (z. B. bei Reset)
+  unassign(issueId: string): void {
+    const updated = this._issues().map(issue =>
+      issue.id === issueId ? { ...issue, stepId: null, releaseId: null } : issue
+    );
+    this._issues.set(updated);
+    issueDB.updateIssuePartial(issueId, { stepId: null, releaseId: null });
+  }
+
+
   setIssues(issues: Issue[]) {
     this._issues.set(issues);
   }
 
-  // Daten zurücksetzen
   async resetAll() {
     await issueDB.issues.clear();
-    await this.initFromDB();
+    await this.seedMockData();
+    await this.loadAllFromDB();
   }
 }

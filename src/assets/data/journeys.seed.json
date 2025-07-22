@@ -1,67 +1,67 @@
 [
   {
-    "id": "onboardingebaba",
-    "title": "Onboarding",
+    "id": "c1b84940-1a83-4a0e-8fd5-e9a964eebaba",
+    "name": "Onboarding",
+    "order": 1,
     "steps": [
       {
-        "id": "reg",
-        "title": "Registrierung starten"
+        "id": "af27827d-83db-4d78-9022-1478491e2a12",
+        "name": "Registrierung starten"
       },
       {
-        "id": "email",
-        "title": "E-Mail bestätigen"
+        "id": "e7b65114-c061-4d91-a89f-6c9c7a9ff403",
+        "name": "E-Mail bestätigen"
       },
       {
-        "id": "login",
-        "title": "Erstes Login"
+        "id": "b68ff948-5a62-4b2e-9cc3-05ae779a63c1",
+        "name": "Erstes Login"
       },
       {
-        "id": "profil",
-        "title": "Profil anlegen"
+        "id": "f354cda7-3e35-42c7-b94c-08cc9d0eeb57",
+        "name": "Profil anlegen"
       }
-    ],
-    "order": 1
+    ]
   },
   {
-    "id": "project",
-    "title": "Projekt anlegen",
+    "id": "b72e84d0-27f3-4c4d-89df-0f74a0a1bfb0",
+    "name": "Projekt anlegen",
+    "order": 2,
     "steps": [
       {
-        "id": "name",
-        "title": "Projektnamen wählen"
+        "id": "7f52ec64-18a7-4ecf-bb99-4f185c9e9092",
+        "name": "Projektnamen wählen"
       },
       {
-        "id": "desc",
-        "title": "Beschreibung eingeben"
+        "id": "103877c3-ec16-43d2-acc6-cbbd621c60c3",
+        "name": "Beschreibung eingeben"
       },
       {
-        "id": "template",
-        "title": "Template auswählen"
+        "id": "514f8fc5-80f4-4d4e-8b7e-1f2a9f9f29e3",
+        "name": "Template auswählen"
       },
       {
-        "id": "save",
-        "title": "Projekt speichern"
+        "id": "8c4f59f7-742c-429c-9a17-f09c9a07e777",
+        "name": "Projekt speichern"
       }
-    ],
-    "order": 2
+    ]
   },
   {
-    "id": "team",
-    "title": "Team verwalten",
+    "id": "3d540a11-d86a-43de-a531-789b6b3d03e2",
+    "name": "Team verwalten",
+    "order": 3,
     "steps": [
       {
-        "id": "invite",
-        "title": "Nutzer:in einladen"
+        "id": "a0ff3b01-e68c-4d93-bc63-bf11c35d905b",
+        "name": "Nutzer:in einladen"
       },
       {
-        "id": "role",
-        "title": "Rolle festlegen"
+        "id": "5a55a3a5-6e9e-4f4a-a13c-93a4e5085e6d",
+        "name": "Rolle festlegen"
       },
       {
-        "id": "rights",
-        "title": "Rechte verwalten"
+        "id": "b9436b25-b30d-4f2c-8f3f-059b6b86e553",
+        "name": "Rechte verwalten"
       }
-    ],
-    "order": 3
+    ]
   }
 ]

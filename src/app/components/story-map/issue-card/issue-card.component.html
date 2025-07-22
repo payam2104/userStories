@@ -13,6 +13,10 @@
 
       @if (menuOpen) {
       <div class="dropdown-menu">
+        <button (click)="assignReleaseToIssue(null)">
+          – Kein Release –
+        </button>
+
         @for (rel of allReleases(); track rel.id) {
         <button (click)="assignReleaseToIssue(rel.id)">
           {{ rel.name }}

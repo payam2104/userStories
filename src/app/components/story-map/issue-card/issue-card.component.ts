@@ -32,7 +32,7 @@ export class IssueCardComponent {
     return this.allReleases().find(r => r.id === this.issue.releaseId)?.name ?? null;
   }
 
-  async assignReleaseToIssue(releaseId: string) {
+  async assignReleaseToIssue(releaseId: string | null) {
     const updatedIssue = { ...this.issue, releaseId };
     await this.issueStore.assignToRelease(this.issue.id, releaseId);
     this.issue = updatedIssue;

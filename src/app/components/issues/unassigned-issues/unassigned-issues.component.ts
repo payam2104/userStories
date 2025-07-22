@@ -6,7 +6,7 @@ import { IssueStore } from '../../../core/stores/issue.store';
 import { issueDB } from '../../../core/services/issue-db.service';
 import { Issue } from '../../../core/model/issue.model';
 import { JourneyStore } from '../../../core/stores/journey.store';
-import { ReleaseStore } from '../../../core/stores/release.store'; // 🆕
+import { ReleaseStore } from '../../../core/stores/release.store';
 import { IssueCardComponent } from '../../story-map/issue-card/issue-card.component';
 
 @Component({
@@ -17,40 +17,36 @@ import { IssueCardComponent } from '../../story-map/issue-card/issue-card.compon
   styleUrls: ['./unassigned-issues.component.scss']
 })
 export class UnassignedIssuesComponent {
-  // Entferne @Input – wir bauen das hier selbst dynamisch auf
-  readonly issues: Signal<Issue[]>;
+  @Input() connectedDropListIds: string[] = [];
 
-  // 🔌 Store-Instanzen
-  private readonly journeyStore = inject(JourneyStore);
-  private readonly issueStore = inject(IssueStore);
-  private readonly releaseStore = inject(ReleaseStore); // 🆕
+  readonly unassignedIssues = computed(() =>
+    this.issueStore.issues().filter(issue => !issue.stepId && !issue.releaseId)
+  );
 
-  constructor() {
-    this.issues = this.issueStore.unassignedIssues;
-  }
+  constructor(
+    private issueStore: IssueStore,
+    private journeyStore: JourneyStore,
+    private releaseStore: ReleaseStore) { }
 
-  // ✅ Alle Drop-Zonen dynamisch berechnen
-  readonly connectedDropListIds = computed(() => {
-    const stepIds = this.journeyStore.getAllSteps().map(step => step.id);
-    const releaseIds = this.releaseStore.releases().map(r => `release_${r.id}`);
-    return ['unassigned', ...stepIds, ...releaseIds];
-  });
-
+  // Drop-Zonen berechnen (Steps + Releases)
   onDrop(event: CdkDragDrop<Issue[]>) {
     const droppedIssue = event.item.data as Issue;
-    const targetStepId = event.container.id;
-    this.issueStore.assignToStep(droppedIssue.id, targetStepId);
+    const targetId = event.container.id;
+
+    if (targetId === 'unassigned') {
+      // vollständig loslösen
+      this.issueStore.unassign(droppedIssue.id);
+    } else if (targetId.startsWith('release_')) {
+      const releaseId = targetId.replace('release_', '');
+      this.issueStore.assignToRelease(droppedIssue.id, releaseId);
+    } else {
+      this.issueStore.assignToStep(droppedIssue.id, targetId);
+    }
   }
 
   async resetData() {
-    // 1. DB leeren
-    await issueDB.clearAll();
-
-    // 2. Neu seeden
     await this.issueStore.resetAll();
-    await this.journeyStore.initFromDB();
-
-    // 3. UI aktualisieren
-    this.issueStore.setIssues([]);
+    await this.releaseStore.resetAll?.();
+    await this.journeyStore.resetAll?.();
   }
 }

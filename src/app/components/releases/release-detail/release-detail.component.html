@@ -1,25 +1,53 @@
-<div class="p-4 max-w-xl mx-auto">
-  <h2 class="text-xl font-bold mb-4">Release bearbeiten</h2>
+<div class="release-detail-wrapper">
+  <h2>Release bearbeiten</h2>
 
-  <form [formGroup]="form" (ngSubmit)="save()" class="space-y-2">
-    <input type="text" formControlName="name" placeholder="Name" class="border p-2 rounded w-full" />
-    
-    @if (form.get('name')?.invalid && form.get('name')?.touched) {
-      <div class="text-red-500 text-sm">
-        Name ist erforderlich.
-      </div>
-    }
+  <form [formGroup]="form" (ngSubmit)="save()" class="release-form">
+    <div class="form-group">
+      <label for="name">Name</label>
+      <input id="name" type="text" formControlName="name" />
+      @if (form.get('name')?.invalid && form.get('name')?.touched) {
+        <div class="form-error">Name ist erforderlich.</div>
+      }
+    </div>
 
-    <input type="text" formControlName="description" placeholder="Beschreibung" class="border p-2 rounded w-full" />
+    <div class="form-group">
+      <label for="description">Beschreibung</label>
+      <input id="description" type="text" formControlName="description" />
+    </div>
 
-    <div class="flex gap-4 mt-4">
-      <button type="submit" [disabled]="form.invalid"
-        class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        💾 Speichern
-      </button>
-      <button type="button" (click)="cancel()" class="text-gray-600 underline">
-        🔙 Zurück zur Liste
-      </button>
+    <div class="form-actions">
+      <button type="submit" [disabled]="form.invalid">💾 Speichern</button>
+      <button type="button" (click)="cancel()">🔙 Zurück zur Liste</button>
     </div>
   </form>
+
+  <div class="issue-list-section">
+    <h3>Zugeordnete Issues</h3>
+
+    @if (releaseIssues().length === 0) {
+      <div class="no-issues">Keine Issues diesem Release zugeordnet.</div>
+    } @else {
+      <div class="issue-list">
+        @for (issue of releaseIssues(); track issue.id) {
+          <div class="issue-card">
+            <div class="issue-info">
+              <div class="issue-title">{{ issue.title }}</div>
+              <div class="issue-id">ID: {{ issue.id }}</div>
+            </div>
+
+            <div class="issue-select">
+              <label>Verschieben zu:</label>
+              <select #selectElement (change)="moveIssueToRelease(issue.id, selectElement.value)">
+                @for (r of allReleases(); track r.id) {
+                  <option [value]="r.id" [selected]="r.id === releaseId()">
+                    {{ r.name }}
+                  </option>
+                }
+              </select>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
 </div>

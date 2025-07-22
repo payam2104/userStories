@@ -1,8 +1,5 @@
-import { Issue } from "./issue.model";
-
 export interface Step {
-  id: string;
-  title: string;
+  id: string;  // UUID
+  name: string;
   user_journey_id: string;
-  issues: Issue[];
 }

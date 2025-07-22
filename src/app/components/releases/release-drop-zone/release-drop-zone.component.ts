@@ -29,7 +29,7 @@ export class ReleaseDropZoneComponent {
   private issueStore = inject(IssueStore);
 
   get dropListId(): string {
-    return this.release?.id ? `release_${this.release.id}` : '';
+    return this.release?.id ? this.release.id : '';
   }
 
   onDrop(event: CdkDragDrop<Issue[]>) {

@@ -1,15 +1,15 @@
 import { inject, Injectable, computed, signal } from '@angular/core';
+import { v4 as uuidv4 } from 'uuid';
 import { Release } from '../model/release.model';
 import { ReleaseDB } from '../services/release-db.service';
 
 @Injectable({ providedIn: 'root' })
 export class ReleaseStore {
-  private readonly releaseDB = inject(ReleaseDB);
 
   private readonly _releases = signal<Release[]>([]);
   readonly releases = this._releases.asReadonly();
 
-  constructor() {
+  constructor(private releaseDB: ReleaseDB) {
     this.loadFromDB();
   }
 
@@ -19,10 +19,14 @@ export class ReleaseStore {
   }
 
   async createRelease(release: Release): Promise<void> {
-    await this.releaseDB.add(release);
-
-    this._releases.update(list => [...list, release]);
+    const completeRelease: Release = {
+      ...release,
+      id: release.id || uuidv4()
+    };
+    await this.releaseDB.add(completeRelease);
+    await this.loadFromDB(); // 🧠 direkt neu laden statt manuell hinzufügen
   }
+
 
   async updateRelease(updated: Release): Promise<void> {
     await this.releaseDB.releases.put(updated); // richtig: direkt auf releases-Table
@@ -41,4 +45,15 @@ export class ReleaseStore {
   getReleaseById = (id: string) => computed(() =>
     this._releases().find(r => r.id === id)
   );
+
+  async initFromDB() {
+    await this.loadFromDB();
+  }
+
+
+  // Daten zurücksetzen
+  async resetAll() {
+    await this.releaseDB.releases.clear();
+    await this.initFromDB();
+  }
 }

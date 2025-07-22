@@ -1,15 +1,15 @@
 <h1>User Story Map</h1>
 <div>Anzahl Journeys: {{ journeys().length }}</div>
 <div class="story-map">
-  <app-unassigned-issues />
+  @if (dropListReady()) {
+    <app-unassigned-issues [connectedDropListIds]="allDropListIds()" />
+  }
   <div class="journeys-container" cdkDropListGroup>
     @for (journey of journeys(); track journey.id) {
-    <app-journey-column 
-    [journey]="journey"
-    [allDropListIds]="allDropListIds()"
-    [releases]="journey.title === 'Releases' ? releases() : []"
-    [getIssuesForRelease]="getIssuesForRelease"
-    (rendered)="dropListReady.set(true)" />
+      <app-journey-column
+        [journey]="journey"
+        [connectedDropListIds]="allDropListIds()"
+        (rendered)="onColumnRendered()" />
     }
   </div>
 </div>

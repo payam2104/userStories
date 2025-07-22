@@ -1,77 +1,92 @@
 [
   {
-    "id": "GL-001",
+    "id": "f1a2b3c4-0001-4def-9000-aaa000000001",
     "title": "Login-Fehler",
-    "description": "Fehlermeldung bei ungültigem Passwort"
+    "description": "Fehlermeldung bei ungültigem Passwort",
+    "order": 1
   },
   {
-    "id": "GL-002",
+    "id": "f1a2b3c4-0002-4def-9000-aaa000000002",
     "title": "Suchfunktion verbessern",
-    "description": "Suche reagiert zu langsam"
+    "description": "Suche reagiert zu langsam",
+    "order": 2
   },
   {
-    "id": "GL-003",
+    "id": "f1a2b3c4-0003-4def-9000-aaa000000003",
     "title": "Dark Mode hinzufügen",
-    "description": "Thema wird oft gewünscht"
+    "description": "Thema wird oft gewünscht",
+    "order": 3
   },
   {
-    "id": "GL-004",
+    "id": "f1a2b3c4-0004-4def-9000-aaa000000004",
     "title": "Release Info anzeigen",
-    "description": "Anzeige der aktuellen Version im Footer"
+    "description": "Anzeige der aktuellen Version im Footer",
+    "order": 4
   },
   {
-    "id": "GL-005",
+    "id": "f1a2b3c4-0005-4def-9000-aaa000000005",
     "title": "Registrierung optimieren",
-    "description": "Doppelte Eingabefelder vermeiden"
+    "description": "Doppelte Eingabefelder vermeiden",
+    "order": 5
   },
   {
-    "id": "GL-006",
+    "id": "f1a2b3c4-0006-4def-9000-aaa000000006",
     "title": "Passwort-Richtlinien anzeigen",
-    "description": "Hinweistext zu Passwortanforderungen fehlt beim Registrieren"
+    "description": "Hinweistext zu Passwortanforderungen fehlt beim Registrieren",
+    "order": 6
   },
   {
-    "id": "GL-007",
+    "id": "f1a2b3c4-0007-4def-9000-aaa000000007",
     "title": "E-Mail-Benachrichtigung deaktivieren",
-    "description": "Option zum Deaktivieren der System-E-Mails hinzufügen"
+    "description": "Option zum Deaktivieren der System-E-Mails hinzufügen",
+    "order": 7
   },
   {
-    "id": "GL-008",
+    "id": "f1a2b3c4-0008-4def-9000-aaa000000008",
     "title": "Profilbild-Upload verbessern",
-    "description": "Fehler beim Hochladen großer Bilder"
+    "description": "Fehler beim Hochladen großer Bilder",
+    "order": 8
   },
   {
-    "id": "GL-009",
+    "id": "f1a2b3c4-0009-4def-9000-aaa000000009",
     "title": "Mobile Ansicht optimieren",
-    "description": "Navigation überlappt Inhalte auf kleinen Bildschirmen"
+    "description": "Navigation überlappt Inhalte auf kleinen Bildschirmen",
+    "order": 9
   },
   {
-    "id": "GL-010",
+    "id": "f1a2b3c4-0010-4def-9000-aaa000000010",
     "title": "2-Faktor-Authentifizierung hinzufügen",
-    "description": "Login-Sicherheit durch zweite Authentifizierungsebene erhöhen"
+    "description": "Login-Sicherheit durch zweite Authentifizierungsebene erhöhen",
+    "order": 10
   },
   {
-    "id": "GL-011",
+    "id": "f1a2b3c4-0011-4def-9000-aaa000000011",
     "title": "Spracheinstellungen speichern",
-    "description": "Ausgewählte Sprache wird beim nächsten Login vergessen"
+    "description": "Ausgewählte Sprache wird beim nächsten Login vergessen",
+    "order": 11
   },
   {
-    "id": "GL-012",
+    "id": "f1a2b3c4-0012-4def-9000-aaa000000012",
     "title": "Projektübersicht filtern",
-    "description": "Filter nach Erstellungsdatum oder Tags ermöglichen"
+    "description": "Filter nach Erstellungsdatum oder Tags ermöglichen",
+    "order": 12
   },
   {
-    "id": "GL-013",
+    "id": "f1a2b3c4-0013-4def-9000-aaa000000013",
     "title": "Tooltip für Icons ergänzen",
-    "description": "Nicht alle Icons sind selbsterklärend – Tooltips fehlen"
+    "description": "Nicht alle Icons sind selbsterklärend – Tooltips fehlen",
+    "order": 13
   },
   {
-    "id": "GL-014",
+    "id": "f1a2b3c4-0014-4def-9000-aaa000000014",
     "title": "Fehlerseite 404 gestalten",
-    "description": "Standard-404-Seite durch benutzerfreundliche Version ersetzen"
+    "description": "Standard-404-Seite durch benutzerfreundliche Version ersetzen",
+    "order": 14
   },
   {
-    "id": "GL-015",
+    "id": "f1a2b3c4-0015-4def-9000-aaa000000015",
     "title": "Benutzerrolle ändern",
-    "description": "Admins sollen Rollen direkt im Dashboard anpassen können"
+    "description": "Admins sollen Rollen direkt im Dashboard anpassen können",
+    "order": 15
   }
 ]

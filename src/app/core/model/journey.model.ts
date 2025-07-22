@@ -1,7 +1,8 @@
 import { Step } from './step.model';
 
 export interface Journey {
-  id: string;
-  title: string;
+  id: string;  // UUID
+  name: string;
   steps: Step[];
+  order?: number;
 }

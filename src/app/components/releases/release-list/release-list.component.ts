@@ -1,8 +1,9 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
-import { ReleaseStore } from '../../../core/stores/release.store';
 import { RouterModule } from '@angular/router';
+import { v4 as uuidv4 } from 'uuid';
+import { ReleaseStore } from '../../../core/stores/release.store';
 
 @Component({
   selector: 'app-release-list',
@@ -24,11 +25,8 @@ export class ReleaseListComponent {
   async create() {
     if (this.form.invalid) return;
 
-    const count = this.releases().length + 1;
-    const id = `release_${count.toString().padStart(3, '0')}`;
-
     await this.releaseStore.createRelease({
-      id,
+      id: uuidv4(),
       name: this.form.value.name!.trim(),
       description: this.form.value.description?.trim()
     });

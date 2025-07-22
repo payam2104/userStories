@@ -1,5 +1,5 @@
 export interface Release {
-  id: string;
+  id: string;  // UUID
   name: string;
   description?: string;
 }

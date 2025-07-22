@@ -19,6 +19,11 @@ import { IssueStore } from '../../../core/stores/issue.store';
   styleUrls: ['./story-map.component.scss']
 })
 export class StoryMapComponent {
+  readonly dropListReady = signal(false);
+
+  // wird auf true gesetzt, sobald alle <app-journey-column> fertig gerendert sind
+  renderedColumnsCount = 0;
+
   readonly store = inject(JourneyStore);
   readonly journeys = this.store.journeys;
 
@@ -28,11 +33,9 @@ export class StoryMapComponent {
   readonly releaseStore = inject(ReleaseStore);
   readonly releases = computed(() => this.releaseStore.releases());
 
-  dropListReady = signal(false);
-
-
   constructor() {
-    this.store.initFromDB();
+    this.store.initFromDB(); // journeys
+    this.releaseStore.initFromDB(); // 🆕 wichtig: damit Releases von Anfang an da sind
   }
 
   readonly allStepIds = computed(() =>
@@ -44,10 +47,19 @@ export class StoryMapComponent {
   };
 
   readonly allDropListIds = computed(() => {
-    const stepIds = this.journeys().flatMap(j => j.steps.map(s => s.id));
-    const releaseIds = this.releases().map(r => `release_${r.id}`);
-    return ['unassigned', ...stepIds, ...releaseIds];
+    const validStepIds = this.journeys().flatMap(j => j.steps.map(s => s.id));
+    return ['unassigned', ...validStepIds];
   });
+
+
+
+  onColumnRendered() {
+    this.renderedColumnsCount++;
+    if (this.renderedColumnsCount >= this.journeys().length) {
+      // Jetzt erst connectedDropListIds verteilen
+      this.dropListReady.set(true); // 🟢 Jetzt sind alle DropLists im DOM
+    }
+  }
 
 
 }

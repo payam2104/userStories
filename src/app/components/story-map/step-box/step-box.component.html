@@ -6,7 +6,7 @@
   [cdkDropListData]="issues()"
   [cdkDropListConnectedTo]="connectedDropListIds"
   (cdkDropListDropped)="onDrop($event)">
-  <h4>{{ step().title }}</h4>
+  <h4>{{ step().name }}</h4>
 
   @if (issues().length === 0) {
   <div class="empty">
@@ -19,3 +19,4 @@
   }
 </div>
 }
+

@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
-import { ReleaseStore } from '../../../core/stores/release.store';
-import { Release } from '../../../core/model/release.model';
+import { ActivatedRoute, Params, Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
+
+import { ReleaseStore } from '../../../core/stores/release.store';
+import { IssueStore } from '../../../core/stores/issue.store';
+
+import { Release } from '../../../core/model/release.model';
+import { Issue } from '../../../core/model/issue.model';
 
 @Component({
   selector: 'app-release-detail',
@@ -14,27 +18,44 @@ import { CommonModule } from '@angular/common';
 })
 export class ReleaseDetailComponent implements OnInit {
   form!: FormGroup;
-  releaseId!: string;
+
+  releaseId = signal<string>('');
+  releaseIssues = signal<Issue[]>([]);
+  allReleases = signal<Release[]>([]);
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private store: ReleaseStore
+    private store: ReleaseStore,
+    private issueStore: IssueStore
   ) {}
 
   ngOnInit(): void {
-    this.releaseId = this.route.snapshot.paramMap.get('id')!;
-    const release = this.store.getReleaseById(this.releaseId)();
+    this.route.params.subscribe({
+      next: (params: Params) => {
+        const id = params['id'];
+        if (!id) {
+          this.router.navigate(['/releases']);
+          return;
+        }
 
-    if (!release) {
-      this.router.navigate(['/releases']);
-      return;
-    }
+        this.releaseId.set(id);
+        this.allReleases.set(this.store.releases());
 
-    this.form = this.fb.group({
-      name: [release.name, Validators.required],
-      description: [release.description],
+        const release = this.store.getReleaseById(id)();
+        if (!release) {
+          this.router.navigate(['/releases']);
+          return;
+        }
+
+        this.form = this.fb.group({
+          name: [release.name, Validators.required],
+          description: [release.description],
+        });
+
+        this.refreshIssues();
+      },
     });
   }
 
@@ -42,15 +63,30 @@ export class ReleaseDetailComponent implements OnInit {
     if (this.form.invalid) return;
 
     const updatedRelease: Release = {
-      id: this.releaseId,
+      id: this.releaseId(),
       ...this.form.value,
     };
 
-    await this.store.updateRelease(updatedRelease); // Replaces existing
+    await this.store.updateRelease(updatedRelease);
     this.router.navigate(['/releases']);
   }
 
   cancel(): void {
     this.router.navigate(['/releases']);
+  }
+
+  refreshIssues(): void {
+    const currentId = this.releaseId();
+    const all = this.issueStore.issues();
+    const filtered = all.filter(issue => issue.releaseId === currentId);
+    this.releaseIssues.set(filtered);
+  }
+
+  moveIssueToRelease(issueId: string, newReleaseId: string): void {
+    const issue = this.issueStore.issues().find(i => i.id === issueId);
+    if (!issue || issue.releaseId === newReleaseId) return;
+
+    this.issueStore.updateIssueRelease(issueId, newReleaseId);
+    this.refreshIssues();
   }
 }
