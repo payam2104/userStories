@@ -21,6 +21,11 @@ export class JourneyStore {
     );
   }
 
+  getAllSteps(): Step[] {
+    return this._journeys()
+      .flatMap(journey => journey.steps ?? []);
+  }
+
   setJourneys(journeys: Journey[]) {
     this._journeys.set(journeys);
   }

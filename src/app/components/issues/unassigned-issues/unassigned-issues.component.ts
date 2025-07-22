@@ -1,4 +1,4 @@
-import { Component, Input, Signal } from '@angular/core';
+import { Component, Input, Signal, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 
@@ -6,6 +6,7 @@ import { IssueStore } from '../../../core/stores/issue.store';
 import { issueDB } from '../../../core/services/issue-db.service';
 import { Issue } from '../../../core/model/issue.model';
 import { JourneyStore } from '../../../core/stores/journey.store';
+import { ReleaseStore } from '../../../core/stores/release.store'; // 🆕
 import { IssueCardComponent } from '../../story-map/issue-card/issue-card.component';
 
 @Component({
@@ -16,13 +17,24 @@ import { IssueCardComponent } from '../../story-map/issue-card/issue-card.compon
   styleUrls: ['./unassigned-issues.component.scss']
 })
 export class UnassignedIssuesComponent {
-  @Input() connectedDropListIds: string[] = [];
-  
+  // Entferne @Input – wir bauen das hier selbst dynamisch auf
   readonly issues: Signal<Issue[]>;
-  
-  constructor(private journeyStore: JourneyStore, private issueStore: IssueStore) {
+
+  // 🔌 Store-Instanzen
+  private readonly journeyStore = inject(JourneyStore);
+  private readonly issueStore = inject(IssueStore);
+  private readonly releaseStore = inject(ReleaseStore); // 🆕
+
+  constructor() {
     this.issues = this.issueStore.unassignedIssues;
   }
+
+  // ✅ Alle Drop-Zonen dynamisch berechnen
+  readonly connectedDropListIds = computed(() => {
+    const stepIds = this.journeyStore.getAllSteps().map(step => step.id);
+    const releaseIds = this.releaseStore.releases().map(r => `release_${r.id}`);
+    return ['unassigned', ...stepIds, ...releaseIds];
+  });
 
   onDrop(event: CdkDragDrop<Issue[]>) {
     const droppedIssue = event.item.data as Issue;
@@ -31,18 +43,14 @@ export class UnassignedIssuesComponent {
   }
 
   async resetData() {
-    // 1. Alle Issues aus IndexedDB löschen
+    // 1. DB leeren
     await issueDB.clearAll();
 
-    // 2. Journeys neu aus journeys.seed.json seeden und in Signal setzen
+    // 2. Neu seeden
+    await this.issueStore.resetAll();
     await this.journeyStore.initFromDB();
 
-    // 3. Unassigned Issues im Store auf leere Liste setzen
+    // 3. UI aktualisieren
     this.issueStore.setIssues([]);
-
-    // Hinweis: unassignedIssues wird automatisch neu gerendert
   }
-
-
-
 }

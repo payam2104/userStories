@@ -25,7 +25,7 @@ export class ReleaseListComponent {
     if (this.form.invalid) return;
 
     const count = this.releases().length + 1;
-    const id = `RELEASE-${count.toString().padStart(3, '0')}`;
+    const id = `release_${count.toString().padStart(3, '0')}`;
 
     await this.releaseStore.createRelease({
       id,

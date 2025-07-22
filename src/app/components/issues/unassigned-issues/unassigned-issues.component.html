@@ -1,5 +1,10 @@
-<div class="drop-zone" [id]="'unassigned'" cdkDropList [cdkDropListData]="issues()"
-  [cdkDropListConnectedTo]="connectedDropListIds" (cdkDropListDropped)="onDrop($event)">
+<div class="drop-zone"
+  *ngIf="connectedDropListIds().length > 0"
+  [id]="'unassigned'"
+  cdkDropList
+  [cdkDropListConnectedTo]="connectedDropListIds()"
+  [cdkDropListData]="issues()"
+  (cdkDropListDropped)="onDrop($event)">
   @for (issue of issues(); track issue.id) {
   <app-issue-card [issue]="issue" cdkDrag [cdkDragData]="issue" />
   }

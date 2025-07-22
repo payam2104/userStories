@@ -5,7 +5,6 @@ import { JourneyColumnComponent } from '../journey-column/journey-column.compone
 import { UnassignedIssuesComponent } from '../../issues/unassigned-issues/unassigned-issues.component';
 import { JourneyStore } from '../../../core/stores/journey.store';
 import { ReleaseStore } from '../../../core/stores/release.store';
-import { ReleaseDropZoneComponent } from '../../releases/release-drop-zone/release-drop-zone.component';
 import { Issue } from '../../../core/model/issue.model';
 import { IssueStore } from '../../../core/stores/issue.store';
 
@@ -15,8 +14,7 @@ import { IssueStore } from '../../../core/stores/issue.store';
   imports: [
     CommonModule,
     JourneyColumnComponent,
-    UnassignedIssuesComponent,
-    ReleaseDropZoneComponent],
+    UnassignedIssuesComponent],
   templateUrl: './story-map.component.html',
   styleUrls: ['./story-map.component.scss']
 })
@@ -29,6 +27,9 @@ export class StoryMapComponent {
 
   readonly releaseStore = inject(ReleaseStore);
   readonly releases = computed(() => this.releaseStore.releases());
+
+  dropListReady = signal(false);
+
 
   constructor() {
     this.store.initFromDB();
@@ -44,7 +45,7 @@ export class StoryMapComponent {
 
   readonly allDropListIds = computed(() => {
     const stepIds = this.journeys().flatMap(j => j.steps.map(s => s.id));
-    const releaseIds = this.releases().map(r => `release-${r.id}`);
+    const releaseIds = this.releases().map(r => `release_${r.id}`);
     return ['unassigned', ...stepIds, ...releaseIds];
   });
 

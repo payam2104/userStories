@@ -1,10 +1,30 @@
 <div class="issue-card" cdkDrag [cdkDragData]="issue">
+  <!-- HEAD: Release-Name links | Menü rechts -->
+  <div class="issue-header">
+    <div class="release-label">
+      {{ releaseName }}
+    </div>
+
+    @if (issue.stepId) {
+    <div class="menu-wrapper">
+      <button class="menu-button" (click)="menuOpen = !menuOpen" aria-label="Menü öffnen">
+        ⋮
+      </button>
+
+      @if (menuOpen) {
+      <div class="dropdown-menu">
+        @for (rel of allReleases(); track rel.id) {
+        <button (click)="assignReleaseToIssue(rel.id)">
+          {{ rel.name }}
+        </button>
+        }
+      </div>
+      }
+    </div>
+    }
+  </div>
+
+  <!-- Titel & Beschreibung -->
   <strong>{{ issue.title }}</strong>
   <p>{{ issue.description }}</p>
-  
-  @if (releaseName()) {
-  <small class="text-xs text-blue-600">
-    🎯 {{ releaseName() }}
-  </small>
-  }
 </div>

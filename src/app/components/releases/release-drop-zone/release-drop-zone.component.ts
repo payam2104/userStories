@@ -4,13 +4,12 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 import { Issue } from '../../../core/model/issue.model';
 import { Release } from '../../../core/model/release.model';
 import { IssueStore } from '../../../core/stores/issue.store';
-import { StepBoxComponent } from '../../story-map/step-box/step-box.component';
 import { IssueCardComponent } from '../../story-map/issue-card/issue-card.component';
 
 @Component({
   selector: 'app-release-drop-zone',
   standalone: true,
-  imports: [CommonModule, DragDropModule, StepBoxComponent, IssueCardComponent],
+  imports: [CommonModule, DragDropModule, IssueCardComponent],
   templateUrl: './release-drop-zone.component.html',
   styleUrls: ['./release-drop-zone.component.scss']
 })
@@ -30,7 +29,7 @@ export class ReleaseDropZoneComponent {
   private issueStore = inject(IssueStore);
 
   get dropListId(): string {
-    return this.release?.id ? `release-${this.release.id}` : '';
+    return this.release?.id ? `release_${this.release.id}` : '';
   }
 
   onDrop(event: CdkDragDrop<Issue[]>) {

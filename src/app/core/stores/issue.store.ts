@@ -12,6 +12,7 @@ export class IssueStore {
   }
 
   async initFromDB() {
+    await issueDB.issues.clear(); // ⚠️ verhindert doppelte Einträge!
     await this.seedMockData();
     await this.loadAllFromDB();
   }
@@ -53,15 +54,10 @@ export class IssueStore {
     const issue = this._issues().find(i => i.id === issueId);
     if (!issue) return;
 
-    const updated: Issue = { ...issue, releaseId, stepId: null };
-
-    /*await issueDB.update(issueId, {
-      releaseId,
-      stepId: null
-    });*/
+    const updated: Issue = { ...issue, releaseId };
+    
     await issueDB.updateIssuePartial(issueId, {
-      releaseId,
-      stepId: null
+      releaseId
     });
 
     this._issues.update(list =>
