@@ -1,0 +1,5 @@
+<div *ngIf="undo() as undo" class="snackbar" [class.hide]="isHiding()" (animationend)="onAnimationEnd()">
+  <span class="text">{{ undo.description }}</span>
+  <button class="btn" (click)="undoService.undo()">Rückgängig</button>
+  <button class="close" (click)="hide()">×</button>
+</div>

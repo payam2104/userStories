@@ -1,9 +1,10 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
+import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { ReleaseStore } from '../../../core/stores/release.store';
+import { Release } from '../../../core/model/release.model';
 
 @Component({
   selector: 'app-release-list',
@@ -13,14 +14,19 @@ import { ReleaseStore } from '../../../core/stores/release.store';
   styleUrls: ['./release-list.component.scss']
 })
 export class ReleaseListComponent {
-  private readonly fb = inject(FormBuilder);
-  private readonly releaseStore = inject(ReleaseStore);
-  readonly releases = this.releaseStore.releases;
-
-  readonly form = this.fb.group({
-    name: ['', [Validators.required, Validators.minLength(2)]],
-    description: ['']
-  });
+  public form: FormGroup;
+  public releases: Signal<Release[]>;
+  
+  constructor(
+    private fb: FormBuilder,
+    private releaseStore: ReleaseStore
+  ) {
+    this.releases = this.releaseStore.releases;
+    this.form = this.fb.group({
+      name: ['', [Validators.required, Validators.minLength(2)]],
+      description: ['']
+    });
+  }
 
   async create() {
     if (this.form.invalid) return;
@@ -34,7 +40,11 @@ export class ReleaseListComponent {
     this.form.reset();
   }
 
-  delete(id: string) {
-    this.releaseStore.deleteRelease(id);
+  delete(releaseId: string) {
+    this.releaseStore.deleteRelease(releaseId);
+  }
+
+  deleteWithUndo(release: Release) {
+    this.releaseStore.deleteReleaseWithUndo(release);
   }
 }

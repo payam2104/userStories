@@ -7,6 +7,7 @@ import { JourneyStore } from '../../../core/stores/journey.store';
 import { ReleaseStore } from '../../../core/stores/release.store';
 import { Issue } from '../../../core/model/issue.model';
 import { IssueStore } from '../../../core/stores/issue.store';
+import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-story-map',
@@ -51,14 +52,33 @@ export class StoryMapComponent {
     return ['unassigned', ...validStepIds];
   });
 
-
-
   onColumnRendered() {
     this.renderedColumnsCount++;
     if (this.renderedColumnsCount >= this.journeys().length) {
       // Jetzt erst connectedDropListIds verteilen
       this.dropListReady.set(true); // 🟢 Jetzt sind alle DropLists im DOM
     }
+  }
+
+  drop(event: CdkDragDrop<Issue[]>, stepId?: string) {
+    const issue = event.item.data as Issue;
+
+    if (!stepId) {
+      this.issueStore.unassignCompletelyWithUndo(issue.id);
+      return;
+    }
+
+    this.issueStore.assignToStep(issue.id, stepId);
+  }
+
+  dropFromUnassigned(event: CdkDragDrop<Issue[]>) {
+    const issue = event.item.data as Issue;
+    // 🟢 Komplett entfernen mit Undo (inkl. Release und Step)
+    this.issueStore.unassignCompletelyWithUndo(issue.id);
+  }
+  dropFromStep(event: CdkDragDrop<Issue[]>, stepId: string) {
+    const issue = event.item.data as Issue;
+    this.issueStore.assignToStep(issue.id, stepId);
   }
 
 

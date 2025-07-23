@@ -6,6 +6,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { ReleaseStore } from '../../../core/stores/release.store';
 import { IssueStore } from '../../../core/stores/issue.store';
+import { UndoService } from '../../../core/services/undo.service';
 
 @Component({
   selector: 'app-issue-card',
@@ -20,25 +21,56 @@ export class IssueCardComponent {
 
   menuOpen = false;
 
-  private readonly releaseStore = inject(ReleaseStore);
-  private readonly issueStore = inject(IssueStore);
-  readonly allReleases = this.releaseStore.releases;
+  constructor(
+    private elementRef: ElementRef,
+    private releaseStore: ReleaseStore,
+    private issueStore: IssueStore,
+    private undoService: UndoService
+  ) { }
 
-  constructor(private elementRef: ElementRef) { }
+  get allReleases() {
+    return this.releaseStore.releases();
+  }
 
-  // Release-Namen berechnen
+  /**
+   * Gibt den Namen des zugeordneten Releases zurück.
+   */
   get releaseName(): string | null {
     if (!this.issue?.releaseId) return null;
-    return this.allReleases().find(r => r.id === this.issue.releaseId)?.name ?? null;
+    return this.allReleases.find(r => r.id === this.issue.releaseId)?.name ?? null;
   }
 
+  /**
+   * Weist dem Issue ein neues Release zu und bietet eine Undo-Option an.
+   */
   async assignReleaseToIssue(releaseId: string | null) {
-    const updatedIssue = { ...this.issue, releaseId };
-    await this.issueStore.assignToRelease(this.issue.id, releaseId);
-    this.issue = updatedIssue;
+    if (this.issue.releaseId === releaseId) {
+      this.menuOpen = false;
+      return;
+    }
+
+    const oldReleaseId = this.issue.releaseId ?? '';
+    const newReleaseId = releaseId ?? '';
+    const issueId = this.issue.id;
+
+    this.issueStore.assignToRelease(issueId, newReleaseId);
+    this.issue = { ...this.issue, releaseId: newReleaseId };
     this.menuOpen = false;
+
+    const newTitle = this.allReleases.find(r => r.id === newReleaseId)?.name ?? 'anderem Release';
+
+    this.undoService.showUndo(
+      `Issue zu '${newTitle}' zugeordnet`,
+      () => {
+        this.issueStore.assignToRelease(issueId, oldReleaseId);
+        this.issue = { ...this.issue, releaseId: oldReleaseId };
+      }
+    );
   }
 
+  /**
+   * Schließt das Menü, wenn außerhalb geklickt wurde.
+   */
   @HostListener('document:click', ['$event.target'])
   onClickOutside(targetElement: HTMLElement) {
     const clickedInside = this.elementRef.nativeElement.contains(targetElement);
@@ -46,6 +78,4 @@ export class IssueCardComponent {
       this.menuOpen = false;
     }
   }
-
 }
-

@@ -2,10 +2,8 @@
   <h2>{{ journey.name }}</h2>
   <div class="step-list">
     @for (step of journey.steps; track step.id) {
-      <app-step-box
-        [step]="getStepSignal(step)"
-        [issues]="getIssuesForStep(step.id)"
-        [connectedDropListIds]="connectedDropListIds" />
+    <app-step-box [step]="getStepSignal(step)" [issues]="getIssuesForStep(step.id)"
+      [connectedDropListIds]="connectedDropListIds" (dropped)="dropped.emit({ event: $event, stepId: step.id })" />
     }
   </div>
 </div>

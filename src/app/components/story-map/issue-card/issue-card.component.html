@@ -17,7 +17,7 @@
           – Kein Release –
         </button>
 
-        @for (rel of allReleases(); track rel.id) {
+        @for (rel of allReleases; track rel.id) {
         <button (click)="assignReleaseToIssue(rel.id)">
           {{ rel.name }}
         </button>

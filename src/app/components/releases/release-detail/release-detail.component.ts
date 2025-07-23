@@ -8,6 +8,7 @@ import { IssueStore } from '../../../core/stores/issue.store';
 
 import { Release } from '../../../core/model/release.model';
 import { Issue } from '../../../core/model/issue.model';
+import { UndoService } from '../../../core/services/undo.service';
 
 @Component({
   selector: 'app-release-detail',
@@ -28,8 +29,9 @@ export class ReleaseDetailComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     private store: ReleaseStore,
-    private issueStore: IssueStore
-  ) {}
+    private issueStore: IssueStore,
+    private undoService: UndoService
+  ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe({
@@ -82,11 +84,38 @@ export class ReleaseDetailComponent implements OnInit {
     this.releaseIssues.set(filtered);
   }
 
-  moveIssueToRelease(issueId: string, newReleaseId: string): void {
+  /*moveIssueToRelease(issueId: string, newReleaseId: string): void {
     const issue = this.issueStore.issues().find(i => i.id === issueId);
     if (!issue || issue.releaseId === newReleaseId) return;
 
     this.issueStore.updateIssueRelease(issueId, newReleaseId);
     this.refreshIssues();
+  }*/
+
+  moveIssueToRelease(issueId: string, newReleaseId: string): void {
+  const issue = this.issueStore.issues().find(i => i.id === issueId);
+  if (!issue || issue.releaseId === newReleaseId) return;
+
+  const oldReleaseId = issue.releaseId ?? '';
+
+  this.issueStore.updateIssueRelease(issueId, newReleaseId);
+  this.refreshIssues();
+
+  const newTitle = this.getReleaseTitleById(newReleaseId);
+
+  this.undoService.showUndo(
+    `Issue zu '${newTitle ?? 'anderem Release'}' zugeordnet`,
+    () => {
+      this.issueStore.updateIssueRelease(issueId, oldReleaseId);
+      this.refreshIssues();
+    }
+  );
+}
+
+
+  private getReleaseTitleById(id: string): string | undefined {
+    return this.allReleases().find(r => r.id === id)?.name;
   }
+
+
 }

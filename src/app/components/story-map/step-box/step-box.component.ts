@@ -1,4 +1,4 @@
-import { Component, Input, computed, inject, signal, Signal } from '@angular/core';
+import { Component, Input, computed, inject, signal, Signal, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 
@@ -18,10 +18,11 @@ export class StepBoxComponent {
   @Input() step?: Signal<Step>;
   @Input() issues: Signal<Issue[]> = signal([]);
   @Input() connectedDropListIds: string[] = [];
+  @Output() dropped = new EventEmitter<CdkDragDrop<Issue[]>>();
 
   private issueStore = inject(IssueStore);
 
-  onDrop(event: CdkDragDrop<Issue[]>) {
+  /*onDrop(event: CdkDragDrop<Issue[]>) {
     const droppedIssue = event.item.data as Issue;
 
     // Nur wenn step vorhanden ist
@@ -29,5 +30,5 @@ export class StepBoxComponent {
       const stepId = this.step().id;
       this.issueStore.assignToStep(droppedIssue.id, stepId);
     }
-  }
+  }*/
 }
