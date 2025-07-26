@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import Dexie, { Table } from 'dexie';
 import { v4 as uuidv4 } from 'uuid';
-import { Journey } from '../model/journey.model';
-import { Step } from '../model/step.model';
+import { Journey } from '../../model/journey.model';
+import { Step } from '../../model/step.model';
 
 @Injectable({ providedIn: 'root' })
 export class JourneyDB extends Dexie {

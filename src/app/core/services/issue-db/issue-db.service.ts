@@ -1,7 +1,11 @@
+import { Injectable } from '@angular/core';
 import Dexie, { Table } from 'dexie';
 import { v4 as uuidv4 } from 'uuid';
-import { Issue } from '../model/issue.model';
+import { Issue } from '../../model/issue.model';
 
+@Injectable({
+  providedIn: 'root'
+})
 export class IssueDB extends Dexie {
   issues!: Table<Issue, string>;
 
@@ -56,4 +60,4 @@ export class IssueDB extends Dexie {
   }
 }
 
-export const issueDB = new IssueDB();
+//export const issueDB = new IssueDB();

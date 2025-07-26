@@ -1,22 +1,25 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { v4 as uuidv4 } from 'uuid';
-import { Journey } from '../model/journey.model';
-import { JourneyDB } from '../services/journey-db.service';
-import { Step } from '../model/step.model';
+import { Journey } from '../../model/journey.model';
+import { JourneyDB } from '../../services/journey-db/journey-db.service';
+import { Step } from '../../model/step.model';
 
 @Injectable({ providedIn: 'root' })
 export class JourneyStore {
+  private readonly journeyDB = inject(JourneyDB);
   private readonly _journeys = signal<Journey[]>([]);
   readonly journeys = this._journeys.asReadonly();
 
-  constructor(private journeyDB: JourneyDB) {
+  constructor() {
     this.loadJourneys();
   }
 
   // Initialer Seed & Load bei App-Start (falls DB leer)
-  initFromDB(): Promise<void> {
-    return this.journeyDB.seedInitialJourneys().then(() => this.loadJourneys());
+  async initFromDB(): Promise<void> {
+    await this.journeyDB.seedInitialJourneys();
+    await this.loadJourneys();
   }
+
 
   // Journeys aus der IndexedDB laden
   async loadJourneys(): Promise<void> {
@@ -76,7 +79,15 @@ export class JourneyStore {
   // Alle Daten zurücksetzen + seeden
   async resetAll(): Promise<void> {
     await this.journeyDB.clear();
-    await this.seedMockData();       // ⬅️ Seed aus JSON
+    await this.seedMockData();       // ⬅Seed aus JSON
     await this.loadJourneys();
   }
+
+  // Ersetzt alle Journeys in der Datenbank und aktualisiert den Signal-Status
+  async replaceAll(journeys: Journey[]) {
+    await this.journeyDB.journeys.clear();
+    await this.journeyDB.journeys.bulkAdd(journeys);
+    this._journeys.set(journeys);
+  }
+
 }

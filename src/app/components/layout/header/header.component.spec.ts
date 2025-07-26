@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HeaderComponent } from './header.component';
+import { provideRouter } from '@angular/router';
 
 describe('HeaderComponentComponent', () => {
   let component: HeaderComponent;
@@ -8,9 +9,12 @@ describe('HeaderComponentComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HeaderComponent]
+      imports: [HeaderComponent],
+      providers: [
+        provideRouter([]) // ← ersetzt RouterTestingModule
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(HeaderComponent);
     component = fixture.componentInstance;
@@ -21,3 +25,5 @@ describe('HeaderComponentComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+

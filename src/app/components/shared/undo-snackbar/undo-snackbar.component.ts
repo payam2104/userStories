@@ -1,6 +1,6 @@
 import { Component, signal, inject, effect } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UndoService } from '../../../core/services/undo.service';
+import { UndoService } from '../../../core/services/undo/undo.service';
 
 @Component({
   selector: 'app-undo-snackbar',
@@ -31,7 +31,6 @@ export class UndoSnackbarComponent {
         this.isHiding.set(false);
       }
     });
-
   }
 
   hide() {
@@ -41,7 +40,7 @@ export class UndoSnackbarComponent {
 
   onAnimationEnd() {
     if (this.isHiding()) {
-      // ❗ kein weiteres Signal hier setzen
+      // kein weiteres Signal hier setzen
       queueMicrotask(() => {
         this.undoService.dismiss();
         this.isHiding.set(false); // wieder zurücksetzen

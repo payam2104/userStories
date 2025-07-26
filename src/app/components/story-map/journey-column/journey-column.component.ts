@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { StepBoxComponent } from '../step-box/step-box.component';
 import { Journey } from '../../../core/model/journey.model';
 import { Issue } from '../../../core/model/issue.model';
-import { IssueStore } from '../../../core/stores/issue.store';
+import { IssueStore } from '../../../core/stores/issue/issue.store';
 import { Step } from '../../../core/model/step.model';
 import { CdkDragDrop } from '@angular/cdk/drag-drop';
 
@@ -20,7 +20,6 @@ export class JourneyColumnComponent {
   @Output() rendered = new EventEmitter<void>();
   @Input() connectedDropListIds: string[] = [];
   @Output() dropped = new EventEmitter<{ event: CdkDragDrop<Issue[]>, stepId: string }>();
-
 
   readonly issueStore = inject(IssueStore);
 

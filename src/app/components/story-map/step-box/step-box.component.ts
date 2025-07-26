@@ -4,7 +4,7 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 
 import { Issue } from '../../../core/model/issue.model';
 import { Step } from '../../../core/model/step.model';
-import { IssueStore } from '../../../core/stores/issue.store';
+import { IssueStore } from '../../../core/stores/issue/issue.store';
 import { IssueCardComponent } from '../issue-card/issue-card.component';
 
 @Component({
@@ -22,13 +22,4 @@ export class StepBoxComponent {
 
   private issueStore = inject(IssueStore);
 
-  /*onDrop(event: CdkDragDrop<Issue[]>) {
-    const droppedIssue = event.item.data as Issue;
-
-    // Nur wenn step vorhanden ist
-    if (event.previousContainer !== event.container && this.step) {
-      const stepId = this.step().id;
-      this.issueStore.assignToStep(droppedIssue.id, stepId);
-    }
-  }*/
 }

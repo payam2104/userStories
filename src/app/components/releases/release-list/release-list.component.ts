@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
-import { ReleaseStore } from '../../../core/stores/release.store';
+import { ReleaseStore } from '../../../core/stores/release/release.store';
 import { Release } from '../../../core/model/release.model';
 
 @Component({
@@ -14,13 +14,13 @@ import { Release } from '../../../core/model/release.model';
   styleUrls: ['./release-list.component.scss']
 })
 export class ReleaseListComponent {
+  private readonly fb = inject(FormBuilder);
+  private readonly releaseStore = inject(ReleaseStore);
+
   public form: FormGroup;
   public releases: Signal<Release[]>;
   
-  constructor(
-    private fb: FormBuilder,
-    private releaseStore: ReleaseStore
-  ) {
+  constructor() {
     this.releases = this.releaseStore.releases;
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],

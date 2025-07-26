@@ -4,9 +4,9 @@ import { Issue } from '../../../core/model/issue.model';
 import { Release } from '../../../core/model/release.model';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { ReleaseStore } from '../../../core/stores/release.store';
-import { IssueStore } from '../../../core/stores/issue.store';
-import { UndoService } from '../../../core/services/undo.service';
+import { ReleaseStore } from '../../../core/stores/release/release.store';
+import { IssueStore } from '../../../core/stores/issue/issue.store';
+import { UndoService } from '../../../core/services/undo/undo.service';
 
 @Component({
   selector: 'app-issue-card',
@@ -21,12 +21,10 @@ export class IssueCardComponent {
 
   menuOpen = false;
 
-  constructor(
-    private elementRef: ElementRef,
-    private releaseStore: ReleaseStore,
-    private issueStore: IssueStore,
-    private undoService: UndoService
-  ) { }
+  private elementRef = inject(ElementRef);
+  private releaseStore = inject(ReleaseStore);
+  private issueStore = inject(IssueStore);
+  private undoService = inject(UndoService);
 
   get allReleases() {
     return this.releaseStore.releases();

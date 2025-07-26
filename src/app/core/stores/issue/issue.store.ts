@@ -1,24 +1,24 @@
-import { computed, Injectable, signal } from '@angular/core';
-import { Issue } from '../model/issue.model';
-import { issueDB } from '../services/issue-db.service';
-import { UndoService } from '../services/undo.service';
-import { JourneyStore } from './journey.store';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { Issue } from '../../model/issue.model';
+import { IssueDB } from '../../services/issue-db/issue-db.service';
+import { UndoService } from '../../services/undo/undo.service';
+import { JourneyStore } from '../journey/journey.store';
 
 @Injectable({ providedIn: 'root' })
 export class IssueStore {
+  private undoService = inject(UndoService)
+  private journeyStore = inject(JourneyStore)
   private readonly _issues = signal<Issue[]>([]);
   readonly issues = this._issues.asReadonly();
+  private issueDB = inject(IssueDB);
 
-  constructor(
-    private undoService: UndoService,
-    private journeyStore: JourneyStore
-  ) {
+  constructor() {
     this.initFromDB(); // Daten aus DB laden (ggf. seeden)
   }
 
   // Initialisiere Store aus DB (inkl. Seed-Daten, wenn leer)
   async initFromDB() {
-    const count = await issueDB.issues.count();
+    const count = await this.issueDB.issues.count();
     if (count === 0) {
       await this.seedMockData(); // Nur seeden, wenn leer
     }
@@ -27,7 +27,7 @@ export class IssueStore {
 
   // Seed-Daten einfügen
   private async seedMockData() {
-    await issueDB.seedInitialIssues(await this.getMockIssues());
+    await this.issueDB.seedInitialIssues(await this.getMockIssues());
   }
 
   // Lade Seed-Datei
@@ -38,7 +38,7 @@ export class IssueStore {
 
   // Lade alle Issues aus DB und sortiere nach Order
   private async loadAllFromDB() {
-    const issues = await issueDB.getAll();
+    const issues = await this.issueDB.getAll();
     issues.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     this._issues.set(issues);
   }
@@ -50,22 +50,24 @@ export class IssueStore {
 
   // Weise ein Issue einem Step zu, inkl. Undo
   async assignToStep(issueId: string, newStepId: string) {
-    const issues = this._issues();
+    const issues = this._issues(); // Aktuelle Liste holen
     const issue = issues.find(i => i.id === issueId);
-    if (!issue) return;
+    if (!issue) return; // Falls nicht gefunden, abbrechen
 
-    const oldStepId = issue.stepId;
+    const oldStepId = issue.stepId; // Für Undo merken
     issue.stepId = newStepId;
-    await issueDB.issues.put(issue);
-    this._issues.set([...issues]);
 
-    const stepTitle = this.getStepTitleById(newStepId);
+    await this.issueDB.issues.put(issue); // Persistieren
+    this._issues.set([...issues]); // Signal updaten (trigger rerender)
+
+    const stepTitle = this.getStepTitleById(newStepId); // Für Snackbar
+
     this.undoService.showUndo(
       `Issue verschoben zu '${stepTitle ?? 'anderem Step'}'`,
       async () => {
         issue.stepId = oldStepId;
-        await issueDB.issues.put(issue);
-        this._issues.set([...this._issues()]);
+        await this.issueDB.issues.put(issue);
+        this._issues.set([...this._issues()]); // Zustand zurücksetzen
       }
     );
   }
@@ -86,7 +88,7 @@ export class IssueStore {
     if (!issue) return;
 
     const updated: Issue = { ...issue, releaseId };
-    await issueDB.updateIssuePartial(issueId, { releaseId });
+    await this.issueDB.updateIssuePartial(issueId, { releaseId });
 
     this._issues.update(list =>
       list.map(i => i.id === issueId ? updated : i)
@@ -103,7 +105,7 @@ export class IssueStore {
       list.map(i => i.id === issueId ? updated : i)
     );
 
-    issueDB.updateIssuePartial(issueId, { releaseId: newReleaseId });
+    this.issueDB.updateIssuePartial(issueId, { releaseId: newReleaseId });
   }
 
   // Entferne Release-Zuweisung lokal (nur UI)
@@ -119,21 +121,27 @@ export class IssueStore {
 
   // Entferne Step-Zuweisung und speichere in DB
   unassignFromStep(issueId: string) {
+    const issue = this._issues().find(i => i.id === issueId);
+    if (!issue) return;
+
     this._issues.update(list =>
       list.map(issue =>
         issue.id === issueId ? { ...issue, stepId: undefined } : issue
       )
     );
-    issueDB.updateStep(issueId, undefined);
+    this.issueDB.updateStep(issueId, undefined);
   }
 
   // Entferne Step & Release gleichzeitig (ohne Undo)
   unassign(issueId: string): void {
+    const exists = this._issues().some(i => i.id === issueId);
+    if (!exists) return;
+
     const updated = this._issues().map(issue =>
       issue.id === issueId ? { ...issue, stepId: null, releaseId: null } : issue
     );
     this._issues.set(updated);
-    issueDB.updateIssuePartial(issueId, { stepId: null, releaseId: null });
+    this.issueDB.updateIssuePartial(issueId, { stepId: null, releaseId: null });
   }
 
   // 💡 Entferne Step & Release – aber mit Undo-Möglichkeit
@@ -146,7 +154,7 @@ export class IssueStore {
 
     issue.stepId = null;
     issue.releaseId = null;
-    await issueDB.issues.put(issue);
+    await this.issueDB.issues.put(issue);
     this._issues.set([...issues]);
 
     this.undoService.showUndo(
@@ -154,7 +162,7 @@ export class IssueStore {
       async () => {
         issue.stepId = stepId;
         issue.releaseId = releaseId;
-        await issueDB.issues.put(issue);
+        await this.issueDB.issues.put(issue);
         this._issues.set([...this._issues()]);
       }
     );
@@ -167,8 +175,16 @@ export class IssueStore {
 
   // Alles zurücksetzen + neu seeden
   async resetAll() {
-    await issueDB.issues.clear();
+    await this.issueDB.issues.clear();
     await this.seedMockData();
     await this.loadAllFromDB();
   }
+
+  // Ersetzt alle Issues in der Datenbank und aktualisiert den Signal-Status
+  async replaceAll(issues: Issue[]) {
+    await this.issueDB.issues.clear();
+    await this.issueDB.issues.bulkAdd(issues);
+    this._issues.set(issues);
+  }
+
 }

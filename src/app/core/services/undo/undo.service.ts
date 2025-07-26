@@ -1,5 +1,5 @@
 import { Injectable, signal } from '@angular/core';
-import { UndoAction } from '../model/undo-action.model';
+import { UndoAction } from '../../model/undo-action.model';
 
 @Injectable({ providedIn: 'root' })
 export class UndoService {
@@ -18,13 +18,14 @@ export class UndoService {
    * @param undoFn Funktion, die die Aktion rückgängig macht
    * @param duration Zeit in Millisekunden bis automatische Ausblendung
    */
-  showUndo(description: string, undoFn: () => void, duration = 10000) {
+  showUndo(description: string, undoFn: () => void | Promise<void>, duration = 10000) {
     this.clear();
     const timeoutId = setTimeout(() => {
       this.requestHide();
     }, duration);
     this._current.set({ description, undoFn, timeoutId });
   }
+
 
   /**
    * Führt die Undo-Aktion aus und entfernt sie aus dem State.
