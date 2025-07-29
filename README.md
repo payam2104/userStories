@@ -45,4 +45,73 @@ Die Anwendung verwendet:
 ### 4. Öffne anschließend im Browser:
 http://localhost:4200
 
+-------
+-------
 
+## Funktionsübersicht
+
+### 1. User Story Map
+- User Journeys als Spalten erstellen
+- Steps unterhalb der Journeys anlegen
+- Drag & Drop von GitLab Issues auf Steps
+- Persistent über IndexedDB gespeichert
+
+### 2. GitLab-Issues (Mock)
+- 10+ Issues werden initial angezeigt (Titel, Beschreibung, ID)
+- Zuordnung per Drag & Drop auf Steps
+- „Nicht zugeordnet“-Spalte für offene Issues
+
+### 3. Release-Planung
+- Releases erstellen (z. B. „Release Q3 2025“)
+- Issues aus Steps Releases zuweisen
+- Tabellarische Ansicht aller Releases + zugehörige Issues
+
+-------
+-------
+
+## Features
+
+### Feature	Beschreibung
+- Undo	Rückgängig-Funktion bei Verschieben/Löschen von Issues
+- Dark Mode	Theme-Umschalter für Light/Dark
+- JSON Export	(Optional, falls implementiert: Export der Map als JSON-Datei)
+- Unit Tests	Unit-Tests mit karma und jasmine (npm test)
+
+------
+## Tests ausführen
+  ```bash
+  npm test
+  ```
+
+------
+
+## Projektstruktur (Auszug)
+```
+src/
+├── app/
+│ ├── components/
+│ ├── core/
+│   ├── models/
+│   ├── services/
+│   ├── stores/
+├── assets/
+│   ├── data/
+│     ├── json-dateien
+├── styles/
+├── styles.scss
+└── main.ts
+```
+
+------
+
+## Hinweise für Entwickler
+- Es werden keine NgModule verwendet (standalone: true)
+- Styling erfolgt mit SCSS, keine Tailwind-Klassen
+- Moderne Angular Syntax: @for, @if, signal(), computed()
+- Drag & Drop basiert auf native HTML5 API
+- Lokale Datenhaltung über Dexie.js (IndexedDB Wrapper)
+
+------
+
+## Autor
+Payam Koushkbaghi
