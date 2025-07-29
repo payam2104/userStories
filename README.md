@@ -38,11 +38,11 @@ Die Anwendung verwendet:
   ```
 
 ### 3. Anwendung starten (Dev-Modus)
-    ```bash
-    npm start
-    ```
+  ```bash
+  npm start
+  ```
 -------
-Öffne anschließend im Browser:
+### 4. Öffne anschließend im Browser:
 http://localhost:4200
 
 
