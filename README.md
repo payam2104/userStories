@@ -28,7 +28,7 @@ Die Anwendung verwendet:
 
 ### 1. Repository klonen
   ```bash
-  git clone https://github.com/dein-benutzername/user-story-map.git
+  git clone https://github.com/payam2104/userStories.git
   cd user-story-map
   ```
 
