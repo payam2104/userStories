@@ -4,8 +4,6 @@ import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 
 import { IssueStore } from '../../../core/stores/issue/issue.store';
 import { Issue } from '../../../core/model/issue.model';
-import { JourneyStore } from '../../../core/stores/journey/journey.store';
-import { ReleaseStore } from '../../../core/stores/release/release.store';
 import { IssueCardComponent } from '../../story-map/issue-card/issue-card.component';
 
 @Component({
@@ -16,25 +14,21 @@ import { IssueCardComponent } from '../../story-map/issue-card/issue-card.compon
   styleUrls: ['./unassigned-issues.component.scss']
 })
 export class UnassignedIssuesComponent {
+  // Liste aller verbundenen Drop-Zonen
   @Input() connectedDropListIds: string[] = [];
+  // Event-Emitter, um Drop-Events an die Elternkomponente weiterzugeben
   @Output() dropped = new EventEmitter<CdkDragDrop<Issue[]>>();
 
   private issueStore = inject(IssueStore);
-  private journeyStore = inject(JourneyStore);
-  private releaseStore = inject(ReleaseStore);
 
+  // Liefert alle nicht zugeordnete Issues
   readonly unassignedIssues = computed(() =>
     this.issueStore.issues().filter(issue => !issue.stepId && !issue.releaseId)
   );
 
-  // Drop-Zonen berechnen (Steps + Releases)
+  // Wird beim Drag & Drop ausgelöst und leitet das Event weiter an die Elternkomponente
   onDrop(event: CdkDragDrop<Issue[]>) {
     this.dropped.emit(event); // 🔁 Übergib das Event an die Parent-Komponente (story-map)
   }
 
-  async resetData() {
-    await this.issueStore.resetAll();
-    await this.releaseStore.resetAll?.();
-    await this.journeyStore.resetAll?.();
-  }
 }

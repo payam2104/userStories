@@ -1,4 +1,4 @@
-import { Component, ElementRef, HostListener, Input, computed, inject } from '@angular/core';
+import { Component, ElementRef, HostListener, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Issue } from '../../../core/model/issue.model';
 import { Release } from '../../../core/model/release.model';
@@ -19,27 +19,29 @@ export class IssueCardComponent {
   @Input({ required: true }) issue!: Issue;
   @Input({ required: false }) releases: Release[] = [];
 
-  menuOpen = false;
+  menuOpen = false; // Steuert die Sichtbarkeit des Release-Menüs
 
+  // Service- und DOM-Zugriffe
   private elementRef = inject(ElementRef);
   private releaseStore = inject(ReleaseStore);
   private issueStore = inject(IssueStore);
   private undoService = inject(UndoService);
 
+  // Gibt alle Releases aus dem Store zurück (für Dropdowns)
   get allReleases() {
     return this.releaseStore.releases();
   }
 
-  /**
-   * Gibt den Namen des zugeordneten Releases zurück.
-   */
+  //Gibt den Namen des zugeordneten Releases zurück.
   get releaseName(): string | null {
     if (!this.issue?.releaseId) return null;
     return this.allReleases.find(r => r.id === this.issue.releaseId)?.name ?? null;
   }
 
   /**
-   * Weist dem Issue ein neues Release zu und bietet eine Undo-Option an.
+   * Weist dem Issue ein neues Release zu und zeigt eine Undo-Option an
+   * – vermeidet doppelte Zuweisung
+   * – aktualisiert Store und lokale Kopie
    */
   async assignReleaseToIssue(releaseId: string | null) {
     if (this.issue.releaseId === releaseId) {
@@ -66,9 +68,7 @@ export class IssueCardComponent {
     );
   }
 
-  /**
-   * Schließt das Menü, wenn außerhalb geklickt wurde.
-   */
+  //Schließt das Menü, wenn außerhalb geklickt wurde.
   @HostListener('document:click', ['$event.target'])
   onClickOutside(targetElement: HTMLElement) {
     const clickedInside = this.elementRef.nativeElement.contains(targetElement);

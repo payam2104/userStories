@@ -1,12 +1,13 @@
-import { Component, Input, computed, inject, signal, Signal, Output, EventEmitter } from '@angular/core';
+import { Component, Input, signal, Signal, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CdkDragDrop, DragDropModule } from '@angular/cdk/drag-drop';
 
 import { Issue } from '../../../core/model/issue.model';
 import { Step } from '../../../core/model/step.model';
-import { IssueStore } from '../../../core/stores/issue/issue.store';
 import { IssueCardComponent } from '../issue-card/issue-card.component';
 
+// Komponente zur Darstellung eines einzelnen Steps innerhalb einer Journey-Spalte
+// Zeigt die zugehörigen Issues an und ermöglicht Drag & Drop-Zuordnung
 @Component({
   selector: 'app-step-box',
   standalone: true,
@@ -19,7 +20,5 @@ export class StepBoxComponent {
   @Input() issues: Signal<Issue[]> = signal([]);
   @Input() connectedDropListIds: string[] = [];
   @Output() dropped = new EventEmitter<CdkDragDrop<Issue[]>>();
-
-  private issueStore = inject(IssueStore);
 
 }

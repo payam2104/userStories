@@ -21,18 +21,25 @@ export class JourneyColumnComponent {
   @Input() connectedDropListIds: string[] = [];
   @Output() dropped = new EventEmitter<{ event: CdkDragDrop<Issue[]>, stepId: string }>();
 
+  // Zugriff auf den globalen IssueStore
   readonly issueStore = inject(IssueStore);
 
+  // Emit „rendered“ direkt nach der Initialisierung der View
   ngAfterViewInit() {
     this.rendered.emit();
   }
 
+  // Liefert ein Signal mit allen Issues, die zu einem bestimmten Step gehören
   getIssuesForStep(stepId: string): Signal<Issue[]> {
     return computed(() =>
       this.issueStore.issues().filter(issue => issue.stepId === stepId)
     );
   }
 
+  /**
+   * Gibt ein Signal für den übergebenen Step zurück (als Reactive Value)
+   * Wird genutzt, um Step-Daten als Signal zu behandeln
+   */
   getStepSignal(step: Step): Signal<Step> {
     return computed(() => step);
   }

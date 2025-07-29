@@ -111,13 +111,6 @@ describe('ReleaseListComponent', () => {
     expect(mockReleaseStore.createRelease).not.toHaveBeenCalled();
   });
 
-
-  it('sollte deleteRelease mit der übergebenen ID aufrufen', () => {
-    const id = 'test-id-123';
-    component.delete(id);
-    expect(mockReleaseStore.deleteRelease).toHaveBeenCalledOnceWith(id);
-  });
-
   it('sollte deleteReleaseWithUndo mit dem übergebenen Release aufrufen', () => {
     const release: Release = { id: 'r3', name: 'Gamma', description: 'Test C' };
     component.deleteWithUndo(release);

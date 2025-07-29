@@ -1,22 +1,30 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Issue } from '../../model/issue.model';
 import { IssueDB } from '../../services/issue-db/issue-db.service';
 import { UndoService } from '../../services/undo/undo.service';
 import { JourneyStore } from '../journey/journey.store';
 
+// Globaler Store zur Verwaltung aller Issues, inklusive Zuordnung zu Steps und Releases.
+// Nutzt signalbasiertes State-Management, Undo-Service und IndexedDB-Persistenz.
 @Injectable({ providedIn: 'root' })
 export class IssueStore {
   private undoService = inject(UndoService)
   private journeyStore = inject(JourneyStore)
+  private issueDB = inject(IssueDB);
+  
+  // Signal für aktuelle Liste aller Issues
   private readonly _issues = signal<Issue[]>([]);
   readonly issues = this._issues.asReadonly();
-  private issueDB = inject(IssueDB);
 
   constructor() {
-    this.initFromDB(); // Daten aus DB laden (ggf. seeden)
+    // Daten aus DB laden (ggf. seeden)
+    this.initFromDB();
   }
 
-  // Initialisiere Store aus DB (inkl. Seed-Daten, wenn leer)
+  /**
+   * Initialisiert den Store mit Daten aus der Datenbank.
+   * Führt ein Seeding durch, falls die DB leer ist.
+   */
   async initFromDB() {
     const count = await this.issueDB.issues.count();
     if (count === 0) {
@@ -25,30 +33,36 @@ export class IssueStore {
     await this.loadAllFromDB(); // Immer laden
   }
 
-  // Seed-Daten einfügen
+  /**
+   * Führt das Seeding von Mock-Daten aus einer JSON-Datei durch.
+   */
   private async seedMockData() {
     await this.issueDB.seedInitialIssues(await this.getMockIssues());
   }
 
-  // Lade Seed-Datei
+  /**
+   * Lädt Mock-Issues aus Datei 'assets/data/issues.seed.json'.
+   */
   private async getMockIssues(): Promise<Issue[]> {
     const response = await fetch('assets/data/issues.seed.json');
     return await response.json();
   }
 
-  // Lade alle Issues aus DB und sortiere nach Order
+  /**
+   * Lädt alle Issues aus der DB und sortiert sie nach `order`.
+   */
   private async loadAllFromDB() {
     const issues = await this.issueDB.getAll();
     issues.sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     this._issues.set(issues);
   }
 
-  // Nur Issues ohne Step und Release
-  readonly unassignedIssues = computed(() =>
-    this._issues().filter(issue => !issue.stepId && !issue.releaseId)
-  );
-
-  // Weise ein Issue einem Step zu, inkl. Undo
+  /**
+   * Weist ein Issue einem Step zu und speichert den Zustand, inkl. Undo-Funktion.
+   *
+   * @param issueId - ID des Issues
+   * @param newStepId - ID des Ziel-Steps
+   */
   async assignToStep(issueId: string, newStepId: string) {
     const issues = this._issues(); // Aktuelle Liste holen
     const issue = issues.find(i => i.id === issueId);
@@ -72,7 +86,11 @@ export class IssueStore {
     );
   }
 
-  // Titel eines Steps anhand ID finden (nur für Anzeige)
+  /**
+   * Liefert den Step-Titel anhand der ID (für Anzeigenamen in Snackbar etc.).
+   *
+   * @param stepId - ID des Steps
+   */
   private getStepTitleById(stepId: string): string | undefined {
     const journeys = this.journeyStore.journeys();
     for (const journey of journeys) {
@@ -82,7 +100,12 @@ export class IssueStore {
     return undefined;
   }
 
-  // Weise ein Issue einem Release zu (direkt oder null)
+  /**
+   * Weist ein Issue einem Release zu und speichert es (auch `null` möglich).
+   *
+   * @param issueId - ID des Issues
+   * @param releaseId - ID des Releases (oder `null` zum Entfernen)
+   */
   async assignToRelease(issueId: string, releaseId: string | null) {
     const issue = this._issues().find(i => i.id === issueId);
     if (!issue) return;
@@ -95,7 +118,12 @@ export class IssueStore {
     );
   }
 
-  // Release-ID lokal und in DB aktualisieren
+  /**
+   * Aktualisiert die Release-Zuweisung eines Issues direkt (UI + DB).
+   *
+   * @param issueId - ID des Issues
+   * @param newReleaseId - Neue Release-ID
+   */
   updateIssueRelease(issueId: string, newReleaseId: string) {
     const issue = this._issues().find(i => i.id === issueId);
     if (!issue) return;
@@ -108,7 +136,11 @@ export class IssueStore {
     this.issueDB.updateIssuePartial(issueId, { releaseId: newReleaseId });
   }
 
-  // Entferne Release-Zuweisung lokal (nur UI)
+  /**
+   * Entfernt die Release-Zuweisung eines Issues.
+   *
+   * @param issueId - ID des Issues
+   */
   removeFromRelease(issueId: string) {
     this._issues.update(list =>
       list.map(issue =>
@@ -119,32 +151,11 @@ export class IssueStore {
     );
   }
 
-  // Entferne Step-Zuweisung und speichere in DB
-  unassignFromStep(issueId: string) {
-    const issue = this._issues().find(i => i.id === issueId);
-    if (!issue) return;
-
-    this._issues.update(list =>
-      list.map(issue =>
-        issue.id === issueId ? { ...issue, stepId: undefined } : issue
-      )
-    );
-    this.issueDB.updateStep(issueId, undefined);
-  }
-
-  // Entferne Step & Release gleichzeitig (ohne Undo)
-  unassign(issueId: string): void {
-    const exists = this._issues().some(i => i.id === issueId);
-    if (!exists) return;
-
-    const updated = this._issues().map(issue =>
-      issue.id === issueId ? { ...issue, stepId: null, releaseId: null } : issue
-    );
-    this._issues.set(updated);
-    this.issueDB.updateIssuePartial(issueId, { stepId: null, releaseId: null });
-  }
-
-  // 💡 Entferne Step & Release – aber mit Undo-Möglichkeit
+  /**
+   * Entfernt Step und Release und bietet eine Undo-Option an.
+   *
+   * @param issueId - ID des Issues
+   */
   async unassignCompletelyWithUndo(issueId: string) {
     const issues = this._issues();
     const issue = issues.find(i => i.id === issueId);
@@ -168,19 +179,29 @@ export class IssueStore {
     );
   }
 
-  // Überschreibe alle Issues im Store
+  /**
+   * Überschreibt den internen State (Signal) mit einer neuen Liste.
+   *
+   * @param issues - Neue Liste von Issues
+   */
   setIssues(issues: Issue[]) {
     this._issues.set(issues);
   }
 
-  // Alles zurücksetzen + neu seeden
+  /**
+   * Setzt die Datenbank zurück, lädt Seed-Daten und aktualisiert den Store.
+   */
   async resetAll() {
     await this.issueDB.issues.clear();
     await this.seedMockData();
     await this.loadAllFromDB();
   }
 
-  // Ersetzt alle Issues in der Datenbank und aktualisiert den Signal-Status
+  /**
+   * Ersetzt alle Issues in der Datenbank durch eine neue Liste und aktualisiert den Store.
+   *
+   * @param issues - Neue Issues zur vollständigen Übernahme
+   */
   async replaceAll(issues: Issue[]) {
     await this.issueDB.issues.clear();
     await this.issueDB.issues.bulkAdd(issues);

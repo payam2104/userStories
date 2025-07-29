@@ -1,44 +1,41 @@
-<div class="p-4 max-w-xl mx-auto">
-  <h2 class="text-xl font-bold mb-4">Releases</h2>
+<div class="container">
+  <h2>Releases</h2>
 
-  <form [formGroup]="form" (ngSubmit)="create()" class="space-y-2 mb-6">
-    <input type="text" formControlName="name" placeholder="Name des Releases" class="border p-2 rounded w-full" />
-    @if (form.get('name')?.invalid && form.get('name')?.touched) {
-    <div class="text-red-500 text-sm">
-      Bitte gib einen gültigen Namen ein.
-    </div>
-    }
+  <div class="form-container justify-align-center">
+    <form [formGroup]="form" (ngSubmit)="create()" class="form">
+      <app-input
+        [type]="'text'"
+        [controlName]="'name'"
+        [placeholder]="'Name des Releases'"
+        [showError]="form.get('name')?.invalid && form.get('name')?.touched">
+      </app-input>
 
-    <input type="text" formControlName="description" placeholder="Beschreibung (optional)"
-      class="border p-2 rounded w-full" />
+      <app-input
+        [type]="'text'"
+        [controlName]="'description'"
+        [placeholder]="'Beschreibung (optional)'">
+      </app-input>
+      
+      <app-button [buttonLabel]="'Release hinzufügen'" [isDisabled]="form.invalid"></app-button>
+    </form>
+  </div>
 
-    <button type="submit" [disabled]="form.invalid"
-      class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition disabled:opacity-50">
-      ➕ Release hinzufügen
-    </button>
-  </form>
-
-  <ul class="space-y-2">
+  <ul>
     @for (release of releases(); track release.id) {
-    <li class="flex justify-between items-center border p-2 rounded">
-      <div>
-        <div class="font-medium">{{ release.name }}</div>
-        <div class="text-sm text-gray-500">{{ release.id }}</div>
-        <div class="text-sm">{{ release.description }}</div>
+    <li class="justify-align-between width100">
+      <div class="content justify-align-center">
+        <div class="name">{{ release.name }}</div>
+        <div class="description">{{ release.description }}</div>
       </div>
 
-      <div class="flex flex-col items-end space-y-1">
-        <a [routerLink]="['/releases/edit', release.id]" class="text-blue-600 hover:underline text-sm">
-          ✏️ Bearbeiten
+      <div class="action-div justify-align-center">
+        <a [routerLink]="['/releases/edit', release.id]" class="">
+          &#9998;
         </a>
 
-        <!-- <button class="text-red-600 hover:underline text-sm" (click)="delete(release.id)">
-          🗑️ Löschen
-        </button> -->
-        <button class="text-red-600 hover:underline text-sm" (click)="deleteWithUndo(release)">
-          🗑️ Löschen
+        <button (click)="deleteWithUndo(release)">
+          &#10005;
         </button>
-
       </div>
     </li>
     }

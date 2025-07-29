@@ -1,0 +1,87 @@
+// hell-mode
+:root {
+  --bg-color: #ffffff;
+  --text-color: #000000;
+
+  // header und footer
+  --header-nav-color: #333333;
+  --header-footer-bg: #f0f3f7;
+  --header-footer-title: #0723f0;
+
+  //button
+  --bg-button: #c7e2f7;
+  --btn-text-color: #000000;
+  --btn-hover-color: #ffffff;
+
+  //unassigned
+  --bg-unassigned: #d9e0f6;
+
+  //issue-card
+  --bg-issue-card: #ffffff;
+  --text-color-issue-strong: #333333;
+  --text-color-issue-p: #555555;
+  --text-color-release-label: #4b5563;
+  --bg-dropdown-release: #c5c5c5;
+
+  //journey col
+  --bg-journey-col: #a5b9f7;
+
+  //step-box
+  --bg-step-box: #eef0f1;
+  --text-color-step-box-h4: #000000;
+  --text-color-step-box-empty: #999999;
+
+  //release-list
+  --bg-release-list-form: #f2f2f2;
+  --bg-release-list-hover: #f2f2f2;
+  --text-color-release-action-btn: #33a4fa;
+
+
+  //release-detail
+  --bg-release-detail-form: #f2f2f2;
+  --bg-release-detail-hover: #f2f2f2;
+}
+
+//dark-mode
+html.dark {
+  --bg-color: #2d2d2d;
+  --text-color: #ffffff;
+  
+  // header und footer
+  --header-nav-color: #ffffff;
+  --header-footer-bg: #6c6c6c;
+  --header-footer-title: #c5caf0;
+
+  //button
+  --bg-button: #68a9f5;
+  --btn-hover-color: #ffffff;
+  --btn-text-color: #000000;
+
+  //unassigned
+  --bg-unassigned: #707070;
+
+  //issue-card
+  --bg-issue-card: #979797;
+  --text-color-issue-strong: #253055;
+  --text-color-issue-p: #dedede;
+  --text-color-release-label: #ffffff;
+  --bg-dropdown-release: #ffffff;
+
+  //journey col
+  --bg-journey-col: #666e7a;
+
+  //step-box
+  --bg-step-box: #a5aaac;
+  --text-color-step-box-h4: #484950;
+  --text-color-step-box-empty: #e5dfdf;
+
+  //release-list
+  --bg-release-list-form: #666e7a;
+  --bg-release-list-hover: #6d6d6d;
+  --text-color-release-action-btn: #b0d5f1;
+
+
+  //release-detail
+  --bg-release-detail-form: #666e7a;
+  --bg-release-detail-hover: #6d6d6d;
+}

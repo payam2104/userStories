@@ -7,17 +7,22 @@ import { Issue } from '../../model/issue.model';
   providedIn: 'root'
 })
 export class IssueDB extends Dexie {
+  // Tabelle für Issues, Primärschlüssel ist die ID (string)
   issues!: Table<Issue, string>;
 
   constructor() {
     super('IssueDatabase');
 
+    // Datenbankschema: Index auf id, title, description und stepId
     this.version(1).stores({
       issues: 'id,title,description,stepId'
     });
   }
 
-  // Seed aus JSON oder Dummy-Array
+  /**
+   * Initialisiert die Datenbank mit Dummy-Daten (nur wenn leer).
+   * Fügt automatisch UUIDs hinzu, falls nicht vorhanden.
+   */
   async seedInitialIssues(data: Issue[]) {
     const count = await this.issues.count();
     if (count === 0) {
@@ -29,12 +34,19 @@ export class IssueDB extends Dexie {
     }
   }
 
-  // Alle Issues abrufen
+  /**
+   * Gibt alle gespeicherten Issues als Array zurück.
+   */
   async getAll(): Promise<Issue[]> {
     return this.issues.toArray();
   }
 
-  // Schritt-Zuordnung ändern
+  /**
+   * Aktualisiert die Step-Zuordnung eines vorhandenen Issues.
+   *
+   * @param issueId - Die eindeutige ID des Issues, das aktualisiert werden soll.
+   * @param stepId  - Die ID des Steps, dem das Issue neu zugeordnet wird (oder undefined, um die Zuordnung zu entfernen).
+   */
   async updateStep(issueId: string, stepId: string | undefined): Promise<void> {
     const issue = await this.issues.get(issueId);
     if (issue) {
@@ -43,6 +55,12 @@ export class IssueDB extends Dexie {
     }
   }
 
+  /**
+   * Aktualisiert ein bestehendes Issue partiell mit den angegebenen Änderungen.
+   *
+   * @param issueId - Die eindeutige ID des Issues, das aktualisiert werden soll.
+   * @param changes - Ein Objekt mit den zu ändernden Feldern (z. B. title, description, stepId usw.).
+   */
   async updateIssuePartial(issueId: string, changes: Partial<Issue>): Promise<void> {
     const issue = await this.issues.get(issueId);
     if (!issue) return;
@@ -51,13 +69,5 @@ export class IssueDB extends Dexie {
     await this.issues.put(updated);
   }
 
-  async resetIssues(): Promise<void> {
-    await this.issues.clear();
-  }
-
-  async clearAll(): Promise<void> {
-    await this.issues.clear();
-  }
 }
 
-//export const issueDB = new IssueDB();

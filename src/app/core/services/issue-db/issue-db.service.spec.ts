@@ -114,40 +114,4 @@ describe('IssueDB – seedInitialIssues()', () => {
     expect(spy).not.toHaveBeenCalled();
   });
 
-
-  it('sollte alle Issues löschen (resetIssues)', async () => {
-    const issues = [
-      { id: 'i1', title: 'Issue 1', description: 'Desc 1', stepId: 's1' },
-      { id: 'i2', title: 'Issue 2', description: 'Desc 2', stepId: 's2' }
-    ];
-
-    await service.issues.bulkPut(issues);
-
-    let all = await service.getAll();
-    expect(all.length).toBe(2);
-
-    await service.resetIssues();
-
-    all = await service.getAll();
-    expect(all.length).toBe(0);
-  });
-
-  it('sollte alle Issues löschen (clearAll)', async () => {
-    const issues: Issue[] = [
-      { id: 'i1', title: 'Issue 1', description: 'Desc 1', stepId: 's1' },
-      { id: 'i2', title: 'Issue 2', description: 'Desc 2', stepId: 's2' }
-    ];
-
-    await service.issues.bulkPut(issues);
-
-    let all = await service.getAll();
-    expect(all.length).toBe(2);
-
-    await service.clearAll();
-
-    all = await service.getAll();
-    expect(all.length).toBe(0);
-  });
-
-
 });

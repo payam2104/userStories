@@ -1,0 +1,28 @@
+.container {
+  margin-bottom: 20px;
+
+  input[type="text"] {
+    display: block;
+    width: 100%;
+    margin-bottom: 3px;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: all 0.2s;
+
+    &:focus {
+      border-color: #007bff;
+      outline: none;
+      box-shadow: 0 0 0 1px #007bff44;
+    }
+
+    &.ng-invalid.ng-touched {
+      border-color: #ff0000;
+    }
+  }
+
+  .text-red-500 {
+    color: #dc3545;
+    font-size: 0.6rem;
+  }
+}

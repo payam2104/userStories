@@ -1,9 +1,16 @@
 .step-box {
-  background-color: #f9f9f9;
-  border: 1px solid #ccc;
+  background-color: var(--bg-step-box);
+  border: 0px;
   padding: 1rem;
   border-radius: 6px;
   min-height: 150px;
+  margin-bottom: 5px;
+  word-break: break-all;
+
+  h4 {
+    text-decoration: underline;
+    color: var(--text-color-step-box-h4);
+  }
 }
 
 .issue-card {
@@ -22,6 +29,6 @@
 
 .empty {
   font-style: italic;
-  color: #999;
+  color: var(--text-color-step-box-empty);
   padding-top: 0.5rem;
 }

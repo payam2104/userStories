@@ -16,7 +16,7 @@ function createMockIssue(partial: Partial<Issue> = {}): Issue {
     description: '',
     stepId: '',
     releaseId: '',
-    ...partial // ✅ überschreibt z. B. id oder stepId korrekt
+    ...partial // überschreibt z. B. id oder stepId korrekt
   };
 }
 
@@ -136,29 +136,6 @@ describe('IssueStore – initFromDB()', () => {
 
     expect(issueDB.getAll).toHaveBeenCalled();
     expect(store.issues()).toEqual(sortedIssues);
-  });
-
-  it('sollte nur Issues ohne stepId und releaseId zurückgeben', () => {
-    const issues: Issue[] = [
-      {
-        id: '1',
-        title: 'Unassigned 1',
-        description: ''
-      },
-      {
-        id: '2',
-        title: 'Unassigned 2',
-        description: ''
-      }
-    ];
-
-    // @ts-ignore: Direktes Setzen für den Test
-    store['_issues'].set(issues as any);
-
-    expect(store.unassignedIssues()).toEqual([
-      issues[0],
-      issues[1]
-    ]);
   });
 
   it('sollte Step zuweisen und Undo anbieten', async () => {
@@ -353,98 +330,6 @@ describe('IssueStore – initFromDB()', () => {
     const result = store.issues().find(i => i.id === 'rel-1');
     expect(result).toEqual(original); // unverändert
   });
-
-  it('sollte stepId lokal entfernen und in DB updaten', () => {
-    const issue = createMockIssue({ id: 's1', stepId: 'step-1' });
-    store['_issues'].set([issue]);
-
-    const updateStepSpy = spyOn(issueDB, 'updateStep');
-
-    store.unassignFromStep('s1');
-
-    const updated = store.issues().find(i => i.id === 's1');
-    expect(updated?.stepId).toBeUndefined();
-    expect(updateStepSpy).toHaveBeenCalledOnceWith('s1', undefined);
-  });
-
-  it('sollte nichts tun, wenn Issue-ID nicht existiert', () => {
-    const issue = createMockIssue({ id: 'existing-id', stepId: 'step-1' });
-    store['_issues'].set([issue]);
-
-    const updateStepSpy = spyOn(issueDB, 'updateStep');
-
-    // 👉 Jetzt wird eine ID verwendet, die **nicht** in der Liste ist
-    store.unassignFromStep('non-existing-id');
-
-    expect(updateStepSpy).not.toHaveBeenCalled();
-    expect(store.issues().find(i => i.id === 'non-existing-id')).toBeUndefined();
-  });
-
-  it('sollte andere Issues unverändert lassen, wenn ID nicht übereinstimmt', () => {
-    const issue1 = createMockIssue({ id: '1', stepId: 's1' });
-    const issue2 = createMockIssue({ id: '2', stepId: 's2' }); // wird nicht verändert
-
-    store['_issues'].set([issue1, issue2]);
-
-    const updateSpy = spyOn(issueDB, 'updateStep').and.stub();
-
-    store.unassignFromStep('1');
-
-    const list = store['_issues']();
-    const unchanged = list.find(i => i.id === '2');
-
-    expect(unchanged).toBe(issue2); // Objektreferenz gleich = nicht verändert
-    expect(updateSpy).toHaveBeenCalledWith('1', undefined);
-  });
-
-
-  it('sollte Step und Release entfernen und in DB speichern', () => {
-    const issue = createMockIssue({
-      id: 'issue-123',
-      stepId: 'step-1',
-      releaseId: 'release-1',
-    });
-    store['_issues'].set([issue]);
-
-    const updatePartialSpy = spyOn(issueDB, 'updateIssuePartial');
-
-    store.unassign('issue-123');
-
-    const updated = store.issues().find(i => i.id === 'issue-123');
-    expect(updated?.stepId).toBeNull();
-    expect(updated?.releaseId).toBeNull();
-
-    expect(updatePartialSpy).toHaveBeenCalledOnceWith('issue-123', {
-      stepId: null,
-      releaseId: null,
-    });
-  });
-
-  it('sollte nichts tun, wenn Issue-ID nicht existiert', () => {
-    store['_issues'].set([]); // Keine Issues vorhanden
-    const updatePartialSpy = spyOn(issueDB, 'updateIssuePartial');
-
-    store.unassign('non-existing-id');
-
-    expect(updatePartialSpy).not.toHaveBeenCalled();
-  });
-
-  it('sollte andere Issues unverändert lassen, wenn issueId nicht übereinstimmt', () => {
-    const other = createMockIssue({ id: '999', stepId: 's9', releaseId: 'r9' });
-    const target = createMockIssue({ id: '1', stepId: 's1', releaseId: 'r1' });
-    store['_issues'].set([target, other]);
-
-    const dbSpy = spyOn(issueDB, 'updateIssuePartial').and.stub();
-
-    store.unassign('1'); // Nur issue mit id === '1' soll verändert werden
-
-    const updated = store['_issues']();
-    const unchanged = updated.find(i => i.id === '999');
-
-    expect(unchanged).toEqual(other); // <— hier prüfen wir genau `: issue`
-    expect(unchanged).not.toBeUndefined();
-  });
-
 
   it('sollte Step und Release entfernen und Undo ermöglichen', async () => {
     const issue = createMockIssue({

@@ -1,23 +1,31 @@
-<div class="btns-div">
+<div class="justify-align-between">
   <h1>User Story Map</h1>
   <div>
-    <span><button (click)="exportJson()">Export JSON</button></span>
+    <span class="export-btn">
+      <app-button [buttonLabel]="'Export JSON'" (callParentFunction)="exportJson()"></app-button>
+    </span>
     <span>
       <input #fileInput type="file" accept=".json" style="display: none" (change)="importJson($event)" />
-      <button (click)="fileInput.click()">Import JSON</button>
+      <app-button [buttonLabel]="'Import JSON'" (callParentFunction)="fileInput.click()"></app-button>
     </span>
   </div>
 </div>
-<div>Anzahl Journeys: {{ journeys().length }}</div>
 
 <div class="story-map">
   @if (dropListReady()) {
-  <app-unassigned-issues [connectedDropListIds]="allDropListIds()" (dropped)="dropFromUnassigned($event)" />
+  <app-unassigned-issues
+    class="unassigned-container"
+    [connectedDropListIds]="allDropListIds()"
+    (dropped)="dropFromUnassigned($event)" />
   }
 
   <div class="journeys-container" cdkDropListGroup>
     @for (journey of journeys(); track journey.id) {
-    <app-journey-column [journey]="journey" [connectedDropListIds]="allDropListIds()" (rendered)="onColumnRendered()"
+    <app-journey-column
+      class="journey-column"
+      [journey]="journey"
+      [connectedDropListIds]="allDropListIds()"
+      (rendered)="onColumnRendered()"
       (dropped)="dropFromStep($event.event, $event.stepId)" />
     }
   </div>

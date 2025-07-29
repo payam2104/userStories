@@ -1,7 +1,39 @@
 <div class="release-detail-wrapper">
   <h2>Release bearbeiten</h2>
 
-  <form [formGroup]="form" (ngSubmit)="save()" class="release-form">
+  <div class="form-container justify-align-center">
+    <form [formGroup]="form" (ngSubmit)="save()" class="form">
+      <app-input
+        [label]="'Release name'"
+        [type]="'text'"
+        [controlName]="'name'"
+        [showError]="form.get('name')?.invalid && form.get('name')?.touched">
+      </app-input>
+
+      <app-input
+        [label]="'Beschreibung'"
+        [type]="'text'"
+        [controlName]="'description'">
+      </app-input>
+      
+      <div>
+        <span class="save-btn">
+          <app-button
+            [buttonLabel]="'Speichern'"
+            [isDisabled]="form.invalid">
+          </app-button>
+        </span>
+        <span>
+          <app-button
+            [buttonLabel]="'Zurück zur Liste'"
+            (callParentFunction)="cancel()">
+          </app-button>
+        </span>
+      </div>
+    </form>
+  </div>
+
+  <!-- <form [formGroup]="form" (ngSubmit)="save()" class="release-form">
     <div class="form-group">
       <label for="name">Name</label>
       <input id="name" type="text" formControlName="name" />
@@ -19,7 +51,7 @@
       <button type="submit" [disabled]="form.invalid">💾 Speichern</button>
       <button type="button" (click)="cancel()">🔙 Zurück zur Liste</button>
     </div>
-  </form>
+  </form> -->
 
   <div class="issue-list-section">
     <h3>Zugeordnete Issues</h3>
@@ -29,15 +61,12 @@
     } @else {
       <div class="issue-list">
         @for (issue of releaseIssues(); track issue.id) {
-          <div class="issue-card">
-            <div class="issue-info">
-              <div class="issue-title">{{ issue.title }}</div>
-              <div class="issue-id">ID: {{ issue.id }}</div>
-            </div>
+          <div class="issue-card justify-align-between width100">
+            <div class="issue-title">{{ issue.title }}</div>
 
             <div class="issue-select">
-              <label>Verschieben zu:</label>
-              <select #selectElement (change)="moveIssueToRelease(issue.id, selectElement.value)">
+              <label for="issue_{{issue.id}}">Verschieben zu Release: </label>
+              <select id="issue_{{issue.id}}" #selectElement (change)="moveIssueToRelease(issue.id, selectElement.value)">
                 @for (r of allReleases(); track r.id) {
                   <option [value]="r.id" [selected]="r.id === releaseId()">
                     {{ r.name }}

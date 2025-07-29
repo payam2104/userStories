@@ -10,7 +10,9 @@ export class DataIOService {
   private readonly releaseStore = inject(ReleaseStore);
 
   /**
-   * Exportiert die aktuelle User Story Map als JSON-Blob und löst den Download aus.
+   * Exportiert beliebige Daten als JSON-Datei und startet einen automatischen Download.
+   * @param data Die zu exportierenden Daten (z. B. Journeys, Issues, Releases)
+   * @param filename Name der erzeugten Datei (Default: "data.json")
    */
   exportToFile(data: any, filename: string = 'data.json') {
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
@@ -25,7 +27,8 @@ export class DataIOService {
   }
 
   /**
-   * Importiert User Story Map aus einer JSON-Datei und ersetzt bestehende Daten.
+   * Liest eine JSON-Datei ein, parst sie und ersetzt die Daten in allen relevanten Stores.
+   * @param file Die zu importierende Datei (z. B. vom <input type="file">)
    */
   async importFromFile(file: File): Promise<void> {
     const text = await file.text();
@@ -36,7 +39,7 @@ export class DataIOService {
       return;
     }
 
-    // Ersetze Daten in den Stores
+    // Vorhandene Daten durch importierte Daten ersetzen
     await this.journeyStore.replaceAll(json.journeys);
     await this.issueStore.replaceAll(json.issues);
     await this.releaseStore.replaceAll(json.releases)

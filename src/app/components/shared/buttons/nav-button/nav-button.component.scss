@@ -1,0 +1,17 @@
+a {
+  margin-left: 16px;
+  text-decoration: none;
+  color: var(--header-nav-color);
+  padding: 5px 10px;
+  border-radius: 5px;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &.router-link-active {
+    font-weight: bold;
+    color: #007bff;
+  }
+}

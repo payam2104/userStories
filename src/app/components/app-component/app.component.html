@@ -1,3 +1,12 @@
-<app-header></app-header>
-<router-outlet />
+<div class="main">
+  <div class="wrapper">
+    <div>
+      <app-header></app-header>
+      <div class="content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+    <app-footer></app-footer>
+  </div>
+</div>
 <app-undo-snackbar />

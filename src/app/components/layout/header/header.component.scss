@@ -1,22 +1,17 @@
 nav {
   display: flex;
   justify-content: space-between;
-  padding: 1rem;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-}
+  align-items: center;
+  padding: 20px;
+  background-color: var(--header-footer-bg);
+  color: var(--header-footer-title);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.09);
+  width: 100%;
 
-a {
-  margin-left: 1rem;
-  text-decoration: none;
-  color: #333;
-
-  &:hover {
-    text-decoration: underline;
+  .titel {
+    font-family: cursive;
+    font-size: 27px;
+    color: var(--header-footer-title);
   }
 
-  &.router-link-active {
-    font-weight: bold;
-    color: #007bff;
-  }
 }

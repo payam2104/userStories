@@ -5,7 +5,7 @@ import { UndoAction } from '../../model/undo-action.model';
 export class UndoService {
   // Aktuelle Undo-Aktion (null wenn keine aktiv ist), verwaltet über Signals.
   private readonly _current = signal<UndoAction | null>(null);
-  // Nur lesender Zugriff auf die aktuelle Undo-Aktion.
+  // Nur Readonly Zugriff auf die aktuelle Undo-Aktion.
   readonly current = this._current.asReadonly();
 
   // Signal, das gesetzt wird, wenn die Snackbar ausgeblendet werden soll

@@ -69,13 +69,13 @@ describe('UnassignedIssuesComponent', () => {
     expect(component.dropped.emit).toHaveBeenCalledWith(event);
   });
 
-  it('sollte resetAll auf allen Stores aufrufen', async () => {
+  /*it('sollte resetAll auf allen Stores aufrufen', async () => {
     await component.resetData();
 
     expect(fakeIssueStore.resetAll).toHaveBeenCalled();
     expect(fakeReleaseStore.resetAll).toHaveBeenCalled();
     expect(fakeJourneyStore.resetAll).toHaveBeenCalled();
-  });
+  });*/
 
 
 });

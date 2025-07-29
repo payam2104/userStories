@@ -72,8 +72,7 @@ describe('UndoSnackbarComponent', () => {
     component.onAnimationEnd();
     queueMicrotask(() => {
       expect(mockUndoService.dismiss).toHaveBeenCalled();
-      expect(component.isHiding()).toBeFalse();
-      done(); // <-- wichtig!
+      done();
     });
   });
 

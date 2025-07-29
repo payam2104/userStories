@@ -1,8 +1,5 @@
 import { Routes } from '@angular/router';
 
-import { StoryMapComponent } from './components/story-map/story-map/story-map.component';
-import { ReleaseListComponent } from './components/releases/release-list/release-list.component';
-
 export const routes: Routes = [
   {
     path: '',

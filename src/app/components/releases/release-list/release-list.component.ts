@@ -5,11 +5,13 @@ import { RouterModule } from '@angular/router';
 import { v4 as uuidv4 } from 'uuid';
 import { ReleaseStore } from '../../../core/stores/release/release.store';
 import { Release } from '../../../core/model/release.model';
+import { InputComponent } from '../../shared/input/input.component';
+import { ButtonComponent } from "../../shared/buttons/button/button.component";
 
 @Component({
   selector: 'app-release-list',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, InputComponent, ButtonComponent],
   templateUrl: './release-list.component.html',
   styleUrls: ['./release-list.component.scss']
 })
@@ -19,15 +21,18 @@ export class ReleaseListComponent {
 
   public form: FormGroup;
   public releases: Signal<Release[]>;
-  
+
   constructor() {
     this.releases = this.releaseStore.releases;
+
+    // Initialisierung des Formulars mit Validierung (Name erforderlich, min. 2 Zeichen)
     this.form = this.fb.group({
       name: ['', [Validators.required, Validators.minLength(2)]],
       description: ['']
     });
   }
 
+  // Legt ein neues Release an, wenn das Formular gültig ist
   async create() {
     if (this.form.invalid) return;
 
@@ -40,10 +45,7 @@ export class ReleaseListComponent {
     this.form.reset();
   }
 
-  delete(releaseId: string) {
-    this.releaseStore.deleteRelease(releaseId);
-  }
-
+  // Löscht ein Release mit Undo-Option über den Store
   deleteWithUndo(release: Release) {
     this.releaseStore.deleteReleaseWithUndo(release);
   }

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import Dexie, { Table } from 'dexie';
-import { v4 as uuidv4 } from 'uuid';
 import { Journey } from '../../model/journey.model';
 import { Step } from '../../model/step.model';
 
 @Injectable({ providedIn: 'root' })
 export class JourneyDB extends Dexie {
+  // Tabelle für Journey-Einträge, Primärschlüssel ist die ID
   journeys!: Table<Journey, string>;
 
   constructor() {
@@ -16,7 +16,10 @@ export class JourneyDB extends Dexie {
     });
   }
 
-  // Journeys aus seed-Datei laden (z. B. beim App-Start)
+  /**
+   * Lädt Initialdaten aus einer JSON-Seed-Datei (nur wenn die Datenbank leer ist).
+   * Quelle: assets/data/journeys.seed.json
+   */
   async seedInitialJourneys(): Promise<void> {
     const count = await this.journeys.count();
     if (count === 0) {
@@ -33,22 +36,37 @@ export class JourneyDB extends Dexie {
     }
   }
 
-  // Alle Journeys abrufen
+  /**
+   * Gibt alle gespeicherten Journeys als Array zurück.
+   */
   async getAll(): Promise<Journey[]> {
     return this.journeys.toArray();
   }
 
-  // Einzelne Journey hinzufügen
+  /**
+   * Fügt eine neue Journey in die Datenbank ein oder aktualisiert sie.
+   * 
+   * @param journey - Das Journey-Objekt, das hinzugefügt oder überschrieben werden soll.
+   */
   async addJourney(journey: Journey): Promise<void> {
     await this.journeys.put(journey);
   }
 
-  // Mehrere Journeys gleichzeitig hinzufügen
+  /**
+   * Fügt mehrere Journeys gleichzeitig ein oder aktualisiert sie (Bulk-Operation).
+   * 
+   * @param journeys - Array von Journey-Objekten zur Speicherung.
+   */
   async addJourneys(journeys: Journey[]): Promise<void> {
     await this.journeys.bulkPut(journeys);
   }
 
-  // Step zu einem Journey hinzufügen
+  /**
+   * Fügt einem bestehenden Journey ein neues Step-Objekt hinzu.
+   * 
+   * @param journeyId - Die ID der Journey, zu der der Step hinzugefügt werden soll.
+   * @param step - Das neue Step-Objekt.
+   */
   async addStep(journeyId: string, step: Step): Promise<void> {
     const journey = await this.journeys.get(journeyId);
     if (!journey) return;
@@ -57,7 +75,9 @@ export class JourneyDB extends Dexie {
     await this.journeys.put(journey);
   }
 
-  // Alle Journeys löschen (z. B. für reset)
+  /**
+   * Löscht alle Journeys aus der Datenbank
+   */
   async clear(): Promise<void> {
     await this.journeys.clear();
   }

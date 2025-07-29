@@ -1,20 +1,38 @@
-/* You can add global styles to this file, and also import other style files */
+@use './styles/variables.scss' as *;
+
+html,
 body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  padding: 0px;
+  height: 100%;
+  margin: 0px;
 }
 
-.issue-card {
-  cursor: grab;
-  &:active {
-    cursor: grabbing;
-  }
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
 
-.cdk-drag-dragging {
-  cursor: grabbing !important;
+.width100 {
+  width: 100%;
 }
 
-.cdk-drag-preview {
-  cursor: grabbing !important;
-  pointer-events: none;
+.justify-align-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.justify-align-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+select {
+  padding: 6px;
+  border-radius: 4px;
 }

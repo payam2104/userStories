@@ -1,3 +1,9 @@
+@use '../../../../styles/mixins' as *;
+
+.container {
+  height: 100%;
+}
+
 .unassigned-column {
   background-color: #fff8f0;
   border: 1px dashed #ffcc80;
@@ -10,16 +16,16 @@
   margin-bottom: 1rem;
   padding: 0.4rem 1rem;
   background-color: #eee;
-  border: 1px solid #ccc;
+  border: 1px solid #cccccc;
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
 }
 
 .drop-zone {
-  min-height: 100px;
-  padding: 0.5rem;
-  background-color: #f9f9f9;
-  border: 2px dashed #ccc;
+  @include fix-to-page-height;
+  padding: 10px;
+  background-color: var(--bg-unassigned);
+  border: 2px dashed #8fa8f8;
   border-radius: 6px;
 }

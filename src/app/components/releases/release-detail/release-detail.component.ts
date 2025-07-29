@@ -8,16 +8,18 @@ import { IssueStore } from '../../../core/stores/issue/issue.store';
 
 import { Release } from '../../../core/model/release.model';
 import { UndoService } from '../../../core/services/undo/undo.service';
+import { InputComponent } from "../../shared/input/input.component";
+import { ButtonComponent } from "../../shared/buttons/button/button.component";
 
 @Component({
   selector: 'app-release-detail',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule, InputComponent, ButtonComponent],
   templateUrl: './release-detail.component.html',
   styleUrls: ['./release-detail.component.scss'],
 })
 export class ReleaseDetailComponent {
-  // Services
+  // Services 
   private releaseStore = inject(ReleaseStore);
   private issueStore = inject(IssueStore);
   private undoService = inject(UndoService);
@@ -25,15 +27,21 @@ export class ReleaseDetailComponent {
   private router = inject(Router);
   private fb = inject(FormBuilder);
 
-  // Signals
+  // Release-ID aus der Route extrahieren (z. B. /releases/edit/:id)
   readonly releaseId = signal(this.route.snapshot.params['id'] ?? '');
+
+  // Liste aller Releases aus dem Store
   readonly allReleases = computed(() => this.releaseStore.releases());
+
+  // Aktuelles Release-Objekt anhand der ID
   readonly release = computed(() => this.releaseStore.getReleaseById(this.releaseId())());
+
+  // Alle Issues, die zu diesem Release gehören
   readonly releaseIssues = computed(() =>
     this.issueStore.issues().filter(issue => issue.releaseId === this.releaseId())
   );
 
-  // Formular
+  // Reaktives Formular mit Name (Pflichtfeld) und optionaler Beschreibung
   readonly form = this.fb.group({
     name: ['', Validators.required],
     description: [''],
@@ -53,7 +61,7 @@ export class ReleaseDetailComponent {
     });
   }
 
-  // Speichert das aktuelle Release und leitet danach zurück zur Übersicht
+  // Speichert das bearbeitete Release und navigiert zurück zur Übersicht
   async save(): Promise<void> {
     if (this.form.invalid) return;
 
@@ -72,13 +80,12 @@ export class ReleaseDetailComponent {
     this.navigateToReleaseListe();
   }
 
-  // zurück zur Übersicht
+  // Bricht die Bearbeitung ab und navigiert zurück zur Release-Übersicht
   cancel(): void {
     this.navigateToReleaseListe();
   }
 
-  // Verschiebt ein Issue in ein anderes Release
-  // Ermöglicht Rückgängigmachen über Undo-Service
+  // Verschiebt ein Issue in ein anderes Release mit Undo-Möglichkeit
   moveIssueToRelease(issueId: string, newReleaseId: string): void {
     const issue = this.issueStore.issues().find(i => i.id === issueId);
     if (!issue || issue.releaseId === newReleaseId) return;
@@ -102,7 +109,7 @@ export class ReleaseDetailComponent {
     return this.allReleases().find(r => r.id === id)?.name;
   }
 
-  // Zurück zur Übersicht
+  // Navigiert zur Liste aller Releases
   private navigateToReleaseListe(): void {
     this.router.navigate(['/releases']);
   }

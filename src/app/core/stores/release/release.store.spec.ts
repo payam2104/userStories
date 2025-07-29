@@ -1,5 +1,5 @@
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { signal, WritableSignal } from '@angular/core';
+import { signal } from '@angular/core';
 import { ReleaseStore } from './release.store';
 import { ReleaseDB } from '../../services/release-db/release-db.service';
 import { IssueStore } from '../issue/issue.store';

@@ -1,0 +1,13 @@
+<div class="container">
+  @if (!!label) {<label [for]="label">{{label}}</label>}
+  <input
+    [id]="inputId"
+    [type]="type"
+    [formControlName]="controlName"
+    [placeholder]="placeholder"
+    class="border p-2 rounded w-full" />
+
+  @if (showError) {
+    <div class="text-red-500 text-sm">Bitte gib einen gültigen Wert ein</div>
+  }
+</div>

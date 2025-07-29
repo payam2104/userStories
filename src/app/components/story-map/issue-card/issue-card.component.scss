@@ -1,13 +1,15 @@
 .issue-card {
-  background-color: #fff;
+  background-color: var(--bg-issue-card);
   border: 1px solid #ccc;
-  padding: 0.75rem;
+  padding: 10px;
   margin-top: 0.5rem;
-  border-radius: 6px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  position: relative;
   cursor: move;
   transition: box-shadow 0.2s ease;
   user-select: none;
+  word-break: break-all;
 
   &:hover {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.08);
@@ -18,13 +20,13 @@
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.25rem;
-    color: #333;
+    color: var(--text-color-issue-strong);
   }
 
   p {
     margin: 0;
-    font-size: 0.875rem;
-    color: #555;
+    font-size: 0.8rem;
+    color: var(--text-color-issue-p);
   }
 
   small {
@@ -48,7 +50,8 @@
 .issue-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  margin-bottom: 4px;
 }
 
 .menu-wrapper {
@@ -61,7 +64,8 @@
   border: none;
   font-size: 20px;
   cursor: pointer;
-  padding: 4px;
+  padding: 0px;
+  line-height: 1;
   margin-left: auto;
 }
 
@@ -69,9 +73,9 @@
   position: absolute;
   top: 100%;
   right: 0;
-  background: white;
+  background-color: var(--bg-dropdown-release);
   border: 1px solid #ccc;
-  border-radius: 6px;
+  border-radius: 5px;
   min-width: 140px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
   z-index: 100;
@@ -84,102 +88,29 @@
     text-align: left;
     padding: 8px 12px;
     cursor: pointer;
-    font-size: 14px;
+    //font-size: 14px;
 
     &:hover {
-      background: #f3f3f3;
+      background-color: #f3f3f3;
     }
   }
-}
-
-.issue-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 4px;
 }
 
 .release-label {
   font-size: 0.75rem;
   font-weight: 500;
-  color: #4b5563; // Grau
+  color: var(--text-color-release-label);
   margin-top: 2px;
 }
 
 
-.issue-card {
-  padding: 12px;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  background: #fff;
-  position: relative;
-  font-family: system-ui, sans-serif;
-  font-size: 14px;
-}
 
-.issue-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 6px;
-}
 
-.release-label {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: #6b7280; // Grau wie im Screenshot
-}
 
-.menu-wrapper {
-  position: relative;
-}
 
-.menu-button {
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  padding: 0;
-  line-height: 1;
-  margin-left: auto;
-}
 
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  right: 0;
-  background: white;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  min-width: 140px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  z-index: 100;
 
-  button {
-    display: block;
-    width: 100%;
-    background: none;
-    border: none;
-    text-align: left;
-    padding: 8px 12px;
-    cursor: pointer;
-    font-size: 14px;
 
-    &:hover {
-      background: #f3f3f3;
-    }
-  }
-}
 
-strong {
-  font-weight: 600;
-  font-size: 1rem;
-  margin-bottom: 4px;
-  display: block;
-}
 
-p {
-  margin: 0;
-  color: #4b5563;
-  font-size: 0.875rem;
-}
+
