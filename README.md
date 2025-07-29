@@ -56,8 +56,8 @@ http://localhost:4200
 - Drag & Drop von GitLab Issues auf Steps
 - Persistent über IndexedDB gespeichert
 
-### 2. GitLab-Issues (Mock)
-- 10+ Issues werden initial angezeigt (Titel, Beschreibung, ID)
+### 2. Issues (Mock)
+- 15 Issues werden initial angezeigt
 - Zuordnung per Drag & Drop auf Steps
 - „Nicht zugeordnet“-Spalte für offene Issues
 
@@ -74,7 +74,7 @@ http://localhost:4200
 ### Feature	Beschreibung
 - Undo	Rückgängig-Funktion bei Verschieben/Löschen von Issues
 - Dark Mode	Theme-Umschalter für Light/Dark
-- JSON Export	(Optional, falls implementiert: Export der Map als JSON-Datei)
+- JSON Export und Import	(JSON-Datei)
 - Unit Tests	Unit-Tests mit karma und jasmine (npm test)
 
 ------
