@@ -33,3 +33,16 @@ Die Anwendung verwendet:
   ```
 
 ### 2. Abhängigkeiten installieren
+  ```bash
+  npm install
+  ```
+
+### 3. Anwendung starten (Dev-Modus)
+    ```bash
+    npm start
+    ```
+-------
+Öffne anschließend im Browser:
+http://localhost:4200
+
+
