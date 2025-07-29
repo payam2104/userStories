@@ -24,8 +24,12 @@ Die Anwendung verwendet:
 - Angular CLI (global installiert):  
   ```bash
   npm install -g @angular/cli
+  ```
 
 ### 1. Repository klonen
   ```bash
   git clone https://github.com/dein-benutzername/user-story-map.git
   cd user-story-map
+  ```
+
+### 2. Abhängigkeiten installieren
