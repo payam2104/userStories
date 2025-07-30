@@ -1,8 +1,8 @@
-<div class="container">
+<div>
   <h2>Releases</h2>
 
   <div class="form-container justify-align-center">
-    <form [formGroup]="form" (ngSubmit)="create()" class="form">
+    <form [formGroup]="form" (ngSubmit)="create()">
       <app-input
         [type]="'text'"
         [controlName]="'name'"

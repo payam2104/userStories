@@ -1,12 +1,13 @@
+@use '../../../../styles/variables.scss' as v;
+@use '../../../../styles/mixins' as *;
+
 nav {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 20px;
+  @include element-size('height', v.$header-height);
   background-color: var(--header-footer-bg);
   color: var(--header-footer-title);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.09);
   width: 100%;
+  padding: 0px 20px;
 
   .titel {
     font-family: cursive;

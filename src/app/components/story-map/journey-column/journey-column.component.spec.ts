@@ -2,7 +2,6 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { JourneyColumnComponent } from './journey-column.component';
 import { IssueStore } from '../../../core/stores/issue/issue.store';
-import { Journey } from '../../../core/model/journey.model';
 import { Issue } from '../../../core/model/issue.model';
 import { Step } from '../../../core/model/step.model';
 

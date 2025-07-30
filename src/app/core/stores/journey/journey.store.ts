@@ -64,7 +64,7 @@ export class JourneyStore {
    */
   async resetAll(): Promise<void> {
     await this.journeyDB.clear();
-    await this.seedMockData();       // ⬅Seed aus JSON
+    await this.seedMockData();       // Seed aus JSON
     await this.loadJourneys();
   }
 

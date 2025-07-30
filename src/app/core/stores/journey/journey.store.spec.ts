@@ -1,8 +1,8 @@
 import { TestBed, fakeAsync, tick } from '@angular/core/testing';
+import { signal } from '@angular/core';
 import { JourneyStore } from './journey.store';
 import { JourneyDB } from '../../services/journey-db/journey-db.service';
 import { Journey } from '../../model/journey.model';
-import { signal } from '@angular/core';
 
 describe('JourneyStore – initFromDB', () => {
   let store: JourneyStore;
@@ -103,7 +103,7 @@ describe('JourneyStore – initFromDB', () => {
     // Spy konfigurieren
     journeyDBMock.getAll.and.resolveTo(mockJourneys);
 
-    // 🧠 internen Signal-Status manuell setzen
+    // internen Signal-Status manuell setzen
     const journeysSignal = signal<Journey[]>([]);
     Object.defineProperty(store, '_journeys', {
       value: journeysSignal,
@@ -142,7 +142,7 @@ describe('JourneyStore – initFromDB', () => {
       }
     ] as any;
 
-    // 🧪 fetch() mocken
+    // fetch() mocken
     spyOn(window, 'fetch').and.resolveTo(new Response(JSON.stringify(mockResponse)));
 
     // @ts-ignore: Zugriff auf private Methode nur für den Test

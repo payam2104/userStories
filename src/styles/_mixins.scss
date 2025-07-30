@@ -1,7 +1,16 @@
+@use './variables' as v;
+
+/**
+* gibt die Höhe des Elements zurück
+*/
+@mixin element-size($property, $value) {
+  #{$property}: $value;
+}
+
 /**
 * passt die Höhe des Elements zu der Höhe der Seite
 * 271px => header + titel + footer
 */
 @mixin fix-to-page-height {
-  min-height: calc(100vh - 271px);
+  min-height: calc(100vh - #{v.$header-height + v.$footer-height + v.$titel-height});
 }

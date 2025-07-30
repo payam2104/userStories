@@ -13,22 +13,6 @@ describe('StoryMapComponent', () => {
   let component: StoryMapComponent;
   let fixture: ComponentFixture<StoryMapComponent>;
 
-  const journeyStoreMock = {
-    journeys: signal([
-      {
-        id: 'j1',
-        name: 'Journey 1',
-        steps: [{ id: 's1' }, { id: 's2' }]
-      },
-      {
-        id: 'j2',
-        name: 'Journey 2',
-        steps: [{ id: 's3' }]
-      }
-    ]),
-    initFromDB: jasmine.createSpy('initFromDB')
-  };
-
   const releaseStoreMock = {
     releases: signal([]),
     initFromDB: jasmine.createSpy('initFromDB')

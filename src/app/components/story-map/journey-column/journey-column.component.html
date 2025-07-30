@@ -1,6 +1,6 @@
 <div class="journey-column">
   <h2>{{ journey.name }}</h2>
-  <div class="step-list">
+  <div>
     @for (step of journey.steps; track step.id) {
     <app-step-box [step]="getStepSignal(step)" [issues]="getIssuesForStep(step.id)"
       [connectedDropListIds]="connectedDropListIds" (dropped)="dropped.emit({ event: $event, stepId: step.id })" />

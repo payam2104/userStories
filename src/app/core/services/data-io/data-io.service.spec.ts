@@ -48,7 +48,7 @@ describe('DataIoService', () => {
 
     spyOn(document, 'createElement').and.returnValue(mockAnchor as any);
 
-    service.exportToFile(testData); // ⬅️ kein filename angegeben!
+    service.exportToFile(testData); // kein filename angegeben!
 
     expect(mockAnchor.download).toBe('data.json');
     expect(clickSpy).toHaveBeenCalled();
@@ -77,7 +77,7 @@ describe('DataIoService', () => {
   it('sollte alert anzeigen, wenn journeys oder issues fehlen', async () => {
     spyOn(window, 'alert');
 
-    const invalidData = { releases: [{ id: 'r1', name: 'Release 1' }] }; // ⚠️ kein journeys/issues
+    const invalidData = { releases: [{ id: 'r1', name: 'Release 1' }] }; // kein journeys/issues
     const file = new File(
       [JSON.stringify(invalidData)],
       'invalid.json',

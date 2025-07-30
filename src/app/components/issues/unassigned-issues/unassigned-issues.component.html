@@ -1,13 +1,11 @@
+@if (connectedDropListIds.length > 0) {
 <div class="container drop-zone"
-  *ngIf="connectedDropListIds.length > 0"
   [id]="'unassigned'"
   cdkDropList
   [cdkDropListConnectedTo]="connectedDropListIds"
-  
   (cdkDropListDropped)="onDrop($event)">
   @for (issue of unassignedIssues(); track issue.id) {
   <app-issue-card [issue]="issue" cdkDrag [cdkDragData]="issue" />
   }
 </div>
-
-<!-- <button (click)="resetData()">reset DB</button>-->
+}

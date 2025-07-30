@@ -1,4 +1,4 @@
-import { Component, signal, inject, effect } from '@angular/core';
+import { Component, signal, inject, effect, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { UndoService } from '../../../core/services/undo/undo.service';
 
@@ -10,14 +10,13 @@ import { UndoService } from '../../../core/services/undo/undo.service';
   styleUrls: ['./undo-snackbar.component.scss']
 })
 export class UndoSnackbarComponent {
+  // Aktuelle Undo-Aktion als computed Signal
+  readonly undo = computed(() => this.undoService.current());
   // Signal zur Steuerung, ob die Snackbar gerade ausgeblendet wird
   readonly isHiding = signal(false);
 
   // Zugriff auf den UndoService
   readonly undoService = inject(UndoService);
-
-  // Aktuelle Undo-Aktion, falls vorhanden
-  readonly undo = this.undoService.current;
 
   constructor() {
     // Reagiert auf Änderungen am UndoService (neue Aktion oder Dismiss-Wunsch)

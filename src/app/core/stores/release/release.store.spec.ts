@@ -98,33 +98,6 @@ describe('ReleaseStore - loadFromDB', () => {
     expect(store.releases()).toEqual([r1, updatedR2, r3]);
   }));
 
-  /*it('aktualisiert ein bestehendes Release in der Datenbank und im lokalen Signal-Status', fakeAsync(async () => {
-    const vorher: Release = { id: 'r1', name: 'Vorheriger Name' };
-    const nachher: Release = { id: 'r1', name: 'Neuer Name' };
-
-    // 🧠 Manuell gesteuertes Signal (controlled state)
-    const releasesSignal = signal<Release[]>([vorher]);
-
-    Object.defineProperty(store, '_releases', {
-      value: releasesSignal,
-      writable: true,
-    });
-
-    // 🧠 Auch Getter releases() manuell korrekt setzen!
-    Object.defineProperty(store, 'releases', {
-      value: releasesSignal.asReadonly(),
-    });
-
-    releaseDBMock.releases = jasmine.createSpyObj('Table', ['put']);
-    releaseDBMock.releases.put.and.resolveTo(); // Erfolg simulieren
-
-    await store.updateRelease(nachher);
-    tick();
-
-    expect(releaseDBMock.releases.put).toHaveBeenCalledWith(nachher);
-    expect(store.releases()).toEqual([nachher]);
-  }));*/
-
   it('löscht ein Release aus der Datenbank und dem Signal-Status', fakeAsync(async () => {
     // Arrange: initialer Zustand mit zwei Releases
     const r1: Release = { id: 'r1', name: 'Release 1' };
@@ -160,7 +133,7 @@ describe('ReleaseStore - loadFromDB', () => {
     const updatedIssue1: Issue = { ...issue1, releaseId: undefined };
     const updatedIssue2: Issue = { ...issue2, releaseId: undefined };
 
-    // 🔧 Manuelles Setzen des Signal-Status
+    // Manuelles Setzen des Signal-Status
     const releasesSignal = signal<Release[]>([release]);
     const issuesSignal = signal<Issue[]>([issue1, issue2]);
 
@@ -254,7 +227,7 @@ describe('ReleaseStore - loadFromDB', () => {
     await store.deleteReleaseWithUndo(release);
     tick();
 
-    // 🔁 Undo auslösen
+    // Undo auslösen
     await undoFn();
     tick();
 

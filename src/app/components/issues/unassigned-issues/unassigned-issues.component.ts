@@ -28,7 +28,7 @@ export class UnassignedIssuesComponent {
 
   // Wird beim Drag & Drop ausgelöst und leitet das Event weiter an die Elternkomponente
   onDrop(event: CdkDragDrop<Issue[]>) {
-    this.dropped.emit(event); // 🔁 Übergib das Event an die Parent-Komponente (story-map)
+    this.dropped.emit(event); // Übergib das Event an die Parent-Komponente (story-map)
   }
 
 }

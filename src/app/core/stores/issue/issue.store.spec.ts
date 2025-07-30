@@ -1,12 +1,9 @@
 import { TestBed } from '@angular/core/testing';
+import { signal } from '@angular/core';
 import { IssueStore } from './issue.store';
 import { JourneyStore } from '../journey/journey.store';
 import { UndoService } from '../../services/undo/undo.service';
 import { IssueDB } from '../../../core/services/issue-db/issue-db.service';
-
-// Wir mocken issueDB als globale Singleton-Instanz
-import * as IssueDBModule from '../../services/issue-db/issue-db.service';
-import { signal } from '@angular/core';
 import { Issue } from '../../model/issue.model';
 
 function createMockIssue(partial: Partial<Issue> = {}): Issue {
@@ -77,12 +74,12 @@ describe('IssueStore – initFromDB()', () => {
       { id: 'i2', title: 'Issue 2', description: 'Testdesc 2', stepId: '', releaseId: '', createdAt: new Date().toISOString() }
     ];
 
-    // 🧪 window.fetch mocken
+    // window.fetch mocken
     spyOn(window, 'fetch').and.resolveTo(
       new Response(JSON.stringify(mockIssues))
     );
 
-    // 🧪 Methode auf issueDB spyen
+    // Methode auf issueDB spyen
     const seedSpy = spyOn(issueDB, 'seedInitialIssues').and.resolveTo();
 
     // @ts-ignore Zugriff auf private Methode erlaubt
@@ -154,23 +151,23 @@ describe('IssueStore – initFromDB()', () => {
       jasmine.any(Function)
     );
 
-    // 🔄 Undo ausführen
+    // Undo ausführen
     const undoFn = undoServiceSpy.showUndo.calls.mostRecent().args[1];
     await undoFn();
     expect(issue.stepId).toBe('oldStep');
   });
 
   it('sollte nichts tun, wenn Issue nicht gefunden wurde', async () => {
-    // 👻 Leere Liste, d.h. das gesuchte Issue fehlt
+    // Leere Liste, d.h. das gesuchte Issue fehlt
     store['_issues'].set([]);
 
     const putSpy = spyOn(issueDB.issues, 'put').and.resolveTo();
     undoServiceSpy.showUndo.calls.reset();
 
-    // 🧪 Methode aufrufen mit unbekannter ID
+    // Methode aufrufen mit unbekannter ID
     await store.assignToStep('nichtVorhanden', 'irgendeinStep');
 
-    // ✅ Erwartung: `put` und `undo` wurden NICHT aufgerufen
+    // Erwartung: `put` und `undo` wurden NICHT aufgerufen
     expect(putSpy).not.toHaveBeenCalled();
     expect(undoServiceSpy.showUndo).not.toHaveBeenCalled();
   });
@@ -225,7 +222,7 @@ describe('IssueStore – initFromDB()', () => {
       }
     ];
 
-    // ⏹ JourneyStore mit Steps simulieren
+    // JourneyStore mit Steps simulieren
     (journeyStoreStub.journeys as any).set(mockJourneys);
 
     // @ts-ignore Zugriff auf private Methode
@@ -341,9 +338,9 @@ describe('IssueStore – initFromDB()', () => {
 
     const putSpy = spyOn(issueDB.issues, 'put').and.resolveTo(undefined);
 
-    let undoFn: () => Promise<void>; // 🔄 undoFn speichern
+    let undoFn: () => Promise<void>; // undoFn speichern
 
-    // 💡 UndoService mit Async-Funktion abfangen
+    // UndoService mit Async-Funktion abfangen
     undoServiceSpy.showUndo.and.callFake((_msg: string, fn: () => Promise<void>) => {
       undoFn = fn;
     });
@@ -360,7 +357,7 @@ describe('IssueStore – initFromDB()', () => {
       jasmine.any(Function)
     );
 
-    // 🧪 Undo ausführen
+    // Undo ausführen
     await undoFn!();
 
     const reverted = store.issues().find(i => i.id === 'issue-123');

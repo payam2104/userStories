@@ -31,101 +31,17 @@
       align-items: center;
       cursor: default;
 
+      .issue-title {
+        font-weight: bold;
+      }
+
+      .issue-select select {
+        padding: 0.25rem 0.5rem;
+      }
+
       &:hover {
         background-color: var(--bg-release-detail-hover);
       }
     }
   }
 }
-
-
-/*
-:host {
-  display: block;
-  max-width: 600px;
-  margin: 2rem auto;
-  font-family: 'Segoe UI', sans-serif;
-}
-
-input[type='text'] {
-  display: block;
-  width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-bottom: 0.75rem;
-  transition: 0.2s ease;
-
-  &:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 1px #007bff44;
-    outline: none;
-  }
-
-  &.ng-invalid.ng-touched {
-    border-color: #dc3545;
-  }
-}
-
-button {
-  cursor: pointer;
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
-
-.release-detail-wrapper {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 1rem;
-}
-
-.release-form .form-group {
-  margin-bottom: 1rem;
-}
-
-.release-form input {
-  width: 100%;
-  padding: 0.5rem;
-}
-
-.form-error {
-  color: red;
-  font-size: 0.85rem;
-}
-
-.form-actions {
-  margin-top: 1rem;
-  display: flex;
-  gap: 1rem;
-}
-
-
-
-.issue-card {
-  border: 1px solid #ccc;
-  padding: 1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.issue-info {
-  max-width: 70%;
-}
-
-.issue-title {
-  font-weight: bold;
-}
-
-.issue-id {
-  font-size: 0.85rem;
-  color: #666;
-}
-
-.issue-select select {
-  padding: 0.25rem 0.5rem;
-}
-*/

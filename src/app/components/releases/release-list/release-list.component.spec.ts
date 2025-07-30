@@ -90,7 +90,7 @@ describe('ReleaseListComponent', () => {
     // Assert
     expect(mockReleaseStore.createRelease).toHaveBeenCalledOnceWith({
       id: jasmine.any(String),
-      name: 'TestName', // .trim() erwartet
+      name: 'TestName',
       description: 'Beschreibung'
     });
 
@@ -99,7 +99,7 @@ describe('ReleaseListComponent', () => {
   });
 
   it('sollte createRelease NICHT aufrufen, wenn das Formular ungültig ist', async () => {
-    mockReleaseStore.createRelease.calls.reset(); // 🧼 vorherige Aufrufe löschen
+    mockReleaseStore.createRelease.calls.reset(); // vorherige Aufrufe löschen
 
     component.form.setValue({
       name: 'A', // Ungültig: minLength = 2

@@ -25,7 +25,6 @@ describe('IssueCardComponent', () => {
     mockIssueStore = jasmine.createSpyObj('IssueStore', ['assignToRelease']);
     mockReleaseStore = jasmine.createSpyObj('ReleaseStore', [], { releases: jasmine.createSpy().and.returnValue(dummyReleases) });
     mockUndoService = jasmine.createSpyObj('UndoService', ['showUndo']);
-    //mockElementRef = new ElementRef(document.createElement('div'));
     insideElement = document.createElement('div');
     outsideElement = document.createElement('div');
 

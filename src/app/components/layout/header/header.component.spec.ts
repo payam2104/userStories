@@ -11,7 +11,7 @@ describe('HeaderComponentComponent', () => {
     await TestBed.configureTestingModule({
       imports: [HeaderComponent],
       providers: [
-        provideRouter([]) // ← ersetzt RouterTestingModule
+        provideRouter([]) // ersetzt RouterTestingModule
       ]
     })
       .compileComponents();

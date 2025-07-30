@@ -1,6 +1,10 @@
+@use '../../../../styles/variables.scss' as v;
+@use '../../../../styles/mixins' as *;
+
 .container {
+  @include element-size('height', v.$footer-height);
   background-color: var(--header-footer-bg);
-  padding: 30px 20px;
+  padding: 0px 20px;
   font-size: 14px;
   color: #8b8989;
 

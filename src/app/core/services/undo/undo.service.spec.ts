@@ -1,5 +1,4 @@
 import { TestBed } from '@angular/core/testing';
-
 import { UndoService } from './undo.service';
 
 describe('UndoService', () => {
@@ -35,7 +34,7 @@ describe('UndoService', () => {
   });
 
   it('sollte requestHide() nach Ablauf des Timers aufrufen', () => {
-    jasmine.clock().install(); // ⏰ Timer manipulieren
+    jasmine.clock().install(); // Timer manipulieren
     const undoFn = jasmine.createSpy('undoFn');
     const requestHideSpy = spyOn(service, 'requestHide').and.callThrough();
 
@@ -43,12 +42,12 @@ describe('UndoService', () => {
 
     expect(requestHideSpy).not.toHaveBeenCalled();
 
-    // ⏩ Zeit vorspulen
+    // Zeit vorspulen
     jasmine.clock().tick(5000);
 
     expect(requestHideSpy).toHaveBeenCalled();
 
-    jasmine.clock().uninstall(); // 🧹 Aufräumen
+    jasmine.clock().uninstall(); // Aufräumen
   });
 
   it('sollte default timeout von 10000ms verwenden, wenn keine duration angegeben ist', () => {
@@ -56,12 +55,12 @@ describe('UndoService', () => {
     const undoFn = jasmine.createSpy('undoFn');
     const requestHideSpy = spyOn(service, 'requestHide').and.callThrough();
 
-    service.showUndo('Standarddauer-Test', undoFn); // ⬅️ keine Dauer übergeben
+    service.showUndo('Standarddauer-Test', undoFn); // keine Dauer übergeben
 
     jasmine.clock().tick(9999);
     expect(requestHideSpy).not.toHaveBeenCalled();
 
-    jasmine.clock().tick(1); // → jetzt bei 10000 ms
+    jasmine.clock().tick(1); // jetzt bei 10000 ms
     expect(requestHideSpy).toHaveBeenCalled();
 
     jasmine.clock().uninstall();
@@ -118,7 +117,7 @@ describe('UndoService', () => {
     // Spy auf clearTimeout setzen
     spyOn(window, 'clearTimeout').and.callThrough();
 
-    service.dismiss(); // → ruft intern `clear()`
+    service.dismiss(); // ruft intern `clear()`
 
     const currentAfter = service.current();
     expect(currentAfter).toBeNull();

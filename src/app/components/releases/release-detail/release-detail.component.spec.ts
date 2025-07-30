@@ -105,7 +105,7 @@ describe('ReleaseDetailComponent - constructor()', () => {
 
       component.form.setValue({ name, description });
 
-      fakeReleaseStore.updateRelease.calls.reset(); // 🔁 statt spyOn(...)
+      fakeReleaseStore.updateRelease.calls.reset(); // statt spyOn(...)
 
       const router = TestBed.inject(Router) as jasmine.SpyObj<Router>;
       router.navigate.calls.reset();
@@ -127,7 +127,7 @@ describe('ReleaseDetailComponent - constructor()', () => {
     it('soll nichts tun, wenn Issue nicht existiert', () => {
       // Reset der Spy-Zähler
       fakeIssueStore.updateIssueRelease.calls.reset();
-      undoSpy.calls.reset(); // ← HIER, nicht component['undoService'].showUndo!
+      undoSpy.calls.reset(); // HIER, nicht component['undoService'].showUndo!
 
       // Testausführung
       component.moveIssueToRelease('nichtVorhanden', 'r1');
