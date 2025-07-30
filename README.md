@@ -1,59 +1,117 @@
-# UserStories
+# User Story Map – Angular 19 App
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 19.0.6.
+## Überblick
 
-## Development server
+Diese Angular-19-Anwendung dient zur Verwaltung einer **User Story Map** mit lokalem Persistenzspeicher über **IndexedDB (Dexie.js)**. Ziel ist es, User Journeys, User Steps, Issues (Mock-Daten) und Releases interaktiv zu verwalten – komplett offlinefähig, modern und performant.
 
-To start a local development server, run:
+Die Anwendung verwendet:
+- Angular 19 mit `standalone components`
+- Signal-basierter State
+- Dexie.js für IndexedDB
+- Drag & Drop zur Story-Zuordnung
+- Dark Mode Switch
+- Undo-Funktion
+- Unit Tests (Jasmine/Karma)
 
-```bash
-ng serve
+---
+
+## Installation & Starten
+
+### Voraussetzungen
+
+- Node.js ≥ 18
+- npm ≥ 9
+- Angular CLI (global installiert):  
+  ```bash
+  npm install -g @angular/cli
+  ```
+
+### 1. Repository klonen
+  ```bash
+  git clone https://github.com/payam2104/userStories.git
+  cd user-story-map
+  ```
+
+### 2. Abhängigkeiten installieren
+  ```bash
+  npm install
+  ```
+
+### 3. Anwendung starten (Dev-Modus)
+  ```bash
+  npm start
+  ```
+-------
+### 4. Öffne anschließend im Browser:
+http://localhost:4200
+
+-------
+-------
+
+## Funktionsübersicht
+
+### 1. User Story Map
+- User Journeys als Spalten erstellen
+- Steps unterhalb der Journeys anlegen
+- Drag & Drop von GitLab Issues auf Steps
+- Persistent über IndexedDB gespeichert
+
+### 2. Issues (Mock)
+- 15 Issues werden initial angezeigt
+- Zuordnung per Drag & Drop auf Steps
+- „Nicht zugeordnet“-Spalte für offene Issues
+
+### 3. Release-Planung
+- Releases erstellen (z. B. „Release Q3 2025“)
+- Issues aus Steps Releases zuweisen
+- Tabellarische Ansicht aller Releases + zugehörige Issues
+
+-------
+-------
+
+## Features
+
+### Feature	Beschreibung
+- Undo	Rückgängig-Funktion bei Verschieben/Löschen von Issues
+- Dark Mode	Theme-Umschalter für Light/Dark
+- JSON Export und Import	(JSON-Datei)
+- Unit Tests	Unit-Tests mit karma und jasmine (npm test)
+
+------
+## Tests ausführen
+  ```bash
+  npm test
+  ```
+
+------
+
+## Projektstruktur (Auszug)
+```
+src/
+├── app/
+│ ├── components/
+│ ├── core/
+│   ├── models/
+│   ├── services/
+│   ├── stores/
+├── assets/
+│   ├── data/
+│     ├── json-dateien
+├── styles/
+├── styles.scss
+└── main.ts
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+------
 
-## Code scaffolding
+## Hinweise für Entwickler
+- Es werden keine NgModule verwendet (standalone: true)
+- Styling erfolgt mit SCSS, keine Tailwind-Klassen
+- Moderne Angular Syntax: @for, @if, signal(), computed()
+- Drag & Drop basiert auf native HTML5 API
+- Lokale Datenhaltung über Dexie.js (IndexedDB Wrapper)
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+------
 
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
-
-```bash
-ng build
-```
-
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
-
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
-
-```bash
-ng test
-```
-
-## Running end-to-end tests
-
-For end-to-end (e2e) testing, run:
-
-```bash
-ng e2e
-```
-
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+## Autor
+Payam Koushkbaghi
