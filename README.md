@@ -108,7 +108,7 @@ src/
 - Es werden keine NgModule verwendet (standalone: true)
 - Styling erfolgt mit SCSS, keine Tailwind-Klassen
 - Moderne Angular Syntax: @for, @if, signal(), computed()
-- Drag & Drop basiert auf native HTML5 API
+- Das Drag & Drop System basiert auf dem Angular CDK und nutzt dessen abstrahierte Drag & Drop-Implementierung (basierend auf der HTML5-API).
 - Lokale Datenhaltung über Dexie.js (IndexedDB Wrapper)
 
 ------
