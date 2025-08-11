@@ -1,9 +1,12 @@
+@use '../../../../styles/variables' as *;
+
 .journey-column {
   min-width: 100%;
   border: 1px solid #ccc;
   padding: 10px;
   border-radius: 8px;
   background-color: var(--bg-journey-col);
+  box-shadow: $customShadow02;
   word-break: break-all;
   height: 100%;
 }

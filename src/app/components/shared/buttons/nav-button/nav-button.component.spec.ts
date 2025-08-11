@@ -1,32 +1,35 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { NavButtonComponent } from './nav-button.component';
-import { RouterTestingModule } from '@angular/router/testing';
 
 describe('NavButtonComponent', () => {
-  let component: NavButtonComponent;
   let fixture: ComponentFixture<NavButtonComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule, NavButtonComponent]
+      // Standalone: importiere die benötigten Direktiven explizit
+      imports: [NavButtonComponent, RouterLink],
+      providers: [
+        // ersetzt RouterTestingModule / RouterTestingModule.withRoutes([])
+        provideRouter([]),
+      ],
     }).compileComponents();
 
     fixture = TestBed.createComponent(NavButtonComponent);
-    component = fixture.componentInstance;
-
+    const component = fixture.componentInstance;
     component.buttonLabel = 'Weiter';
     component.navRouterLink = '/next-page';
-
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(fixture.componentInstance).toBeTruthy();
   });
 
-  it('should render link with correct label and routerLink', () => {
+  it('should render link with correct label and href', () => {
     const anchor: HTMLAnchorElement = fixture.nativeElement.querySelector('a');
     expect(anchor.textContent?.trim()).toBe('Weiter');
-    expect(anchor.getAttribute('ng-reflect-router-link')).toBe('/next-page');
+    expect(anchor.getAttribute('href') ?? '').toContain('/next-page');
   });
 });

@@ -6,7 +6,7 @@
   // header und footer
   --header-nav-color: #333333;
   --header-footer-bg: #f0f3f7;
-  --header-footer-title: #0723f0;
+  --header-footer-title: #000000;
 
   //button
   --bg-button: #c7e2f7;
@@ -14,7 +14,7 @@
   --btn-hover-color: #ffffff;
 
   //unassigned
-  --bg-unassigned: #d9e0f6;
+  --bg-unassigned: #ffffff;
 
   //issue-card
   --bg-issue-card: #ffffff;
@@ -24,10 +24,10 @@
   --bg-dropdown-release: #c5c5c5;
 
   //journey col
-  --bg-journey-col: #a5b9f7;
+  --bg-journey-col: #cccccc;
 
   //step-box
-  --bg-step-box: #eef0f1;
+  --bg-step-box: #f0f0f0;
   --text-color-step-box-h4: #000000;
   --text-color-step-box-empty: #999999;
 
@@ -50,7 +50,7 @@ html.dark {
   // header und footer
   --header-nav-color: #ffffff;
   --header-footer-bg: #6c6c6c;
-  --header-footer-title: #c5caf0;
+  --header-footer-title: #fffff;
 
   //button
   --bg-button: #68a9f5;
@@ -68,7 +68,7 @@ html.dark {
   --bg-dropdown-release: #ffffff;
 
   //journey col
-  --bg-journey-col: #666e7a;
+  --bg-journey-col: #444444;
 
   //step-box
   --bg-step-box: #a5aaac;
@@ -89,3 +89,5 @@ html.dark {
 $header-height: 80px;
 $footer-height: 80px;
 $titel-height: 80px;
+$customShadow01: 0 4px 12px rgba(0, 0, 0, 0.1);
+$customShadow02: 0 4px 12px rgba(0, 0, 0, 0.2);
